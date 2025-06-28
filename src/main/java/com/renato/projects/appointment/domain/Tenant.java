@@ -1,0 +1,41 @@
+package com.renato.projects.appointment.domain;
+
+import com.renato.projects.appointment.security.domain.User;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class Tenant {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@EqualsAndHashCode.Include
+	private Long id;
+	private String nome;
+	private String slug;
+	@OneToOne
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	public Tenant(String nome, String slug) {
+		super();
+		this.nome = nome;
+		this.slug = slug;
+	}
+
+}
