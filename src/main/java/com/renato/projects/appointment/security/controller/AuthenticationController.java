@@ -14,6 +14,7 @@ import com.renato.projects.appointment.security.controller.dto.AuthenticationDTO
 import com.renato.projects.appointment.security.controller.dto.LoginResponseDTO;
 import com.renato.projects.appointment.security.controller.dto.RegisterDTO;
 import com.renato.projects.appointment.security.domain.User;
+import com.renato.projects.appointment.security.domain.UserRole;
 import com.renato.projects.appointment.security.repository.UserRepository;
 import com.renato.projects.appointment.security.service.TokenService;
 
@@ -41,10 +42,9 @@ public class AuthenticationController {
 		if(this.userRepository.findByLogin(data.login()) != null)
 			return ResponseEntity.badRequest().build();
 		String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-		User newUser = new User(data.login(), encryptedPassword, data.role());
+		User newUser = new User(data.login(), encryptedPassword, UserRole.USER);
 		
 		this.userRepository.save(newUser);
-		
 		return ResponseEntity.ok().build();
 	}
 }

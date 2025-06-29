@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.renato.projects.appointment.controller.dto.PostProcedimentoDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,4 +39,11 @@ public class Procedimento {
 	private Tenant tenant;
 	@OneToMany(mappedBy = "procedimento")
 	private List<Agendamento> agendamentos = new ArrayList<>();
+
+	public Procedimento(PostProcedimentoDTO dto, Tenant tenant) {
+		this.nome = dto.nome();
+		this.descricao = dto.descricao();
+		this.valor = dto.valor();
+		this.tenant = tenant;
+	}
 }
