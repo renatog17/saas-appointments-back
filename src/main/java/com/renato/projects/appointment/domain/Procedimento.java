@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.renato.projects.appointment.controller.dto.PostProcedimentoDTO;
+import com.renato.projects.appointment.controller.dto.procedimento.PostProcedimentoDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

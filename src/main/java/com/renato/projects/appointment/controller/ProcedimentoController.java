@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.renato.projects.appointment.controller.dto.PostProcedimentoDTO;
+import com.renato.projects.appointment.controller.dto.procedimento.PostProcedimentoDTO;
 import com.renato.projects.appointment.service.ProcedimentoService;
 
 import jakarta.validation.Valid;

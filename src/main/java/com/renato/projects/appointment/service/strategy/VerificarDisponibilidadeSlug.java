@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.renato.projects.appointment.controller.dto.PostTenantDTO;
+import com.renato.projects.appointment.controller.dto.tenant.PostTenantDTO;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.repository.TenantRepository;
 

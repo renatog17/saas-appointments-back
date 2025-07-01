@@ -1,4 +1,4 @@
-package com.renato.projects.appointment.controller.dto;
+package com.renato.projects.appointment.controller.dto.procedimento;
 
 import java.math.BigDecimal;
 
