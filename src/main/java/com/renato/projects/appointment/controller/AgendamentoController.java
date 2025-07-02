@@ -1,0 +1,30 @@
+package com.renato.projects.appointment.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.renato.projects.appointment.controller.dto.agendamento.CreateAgendamentoDTO;
+import com.renato.projects.appointment.service.AgendamentoService;
+
+@RestController
+@RequestMapping("/agendamento")
+public class AgendamentoController {
+
+	private AgendamentoService agendamentoService;
+
+	public AgendamentoController(AgendamentoService agendamentoService) {
+		super();
+		this.agendamentoService = agendamentoService;
+	}
+	
+	@PostMapping
+	public ResponseEntity<?> criarAgendamento(@RequestBody CreateAgendamentoDTO createAgendamentoDTO){
+		agendamentoService.realizarAgendamento(createAgendamentoDTO);
+		return null;
+	}
+	
+	
+}

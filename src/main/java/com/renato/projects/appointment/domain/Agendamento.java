@@ -1,5 +1,7 @@
 package com.renato.projects.appointment.domain;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,4 +32,14 @@ public class Agendamento {
 	@ManyToOne
 	@JoinColumn(name = "procedimento_id")
 	private Procedimento procedimento;
+	private LocalDateTime dateTime;
+	
+	public Agendamento(Consumidor consumidor, Procedimento procedimento, LocalDateTime dateTime) {
+		super();
+		this.consumidor = consumidor;
+		this.procedimento = procedimento;
+		this.dateTime = dateTime;
+	}
+	
+	
 }

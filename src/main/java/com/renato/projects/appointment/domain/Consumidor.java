@@ -28,8 +28,16 @@ public class Consumidor {
 	private Long id;
 	private String telefone;
 	private String nome;
+	private String email;
 	@OneToMany(mappedBy = "consumidor")
 	private List<Agendamento> agendamentos = new ArrayList<>();
+	
+	public Consumidor(String telefone, String email) {
+		super();
+		this.telefone = telefone;
+		this.email = email;
+	}
+	
 	
 	
 }
