@@ -37,4 +37,9 @@ public class TenantController {
 	public ResponseEntity<?> getTenant(@PathVariable String slug){
 		return ResponseEntity.ok(tenantService.findTenantWithProcedimentosBySlug(slug));
 	}
+	
+	@GetMapping()
+	public ResponseEntity<?> getTenant(){
+		return ResponseEntity.ok(tenantService.findTenantWithProcedimentosByUserAuthenticated());
+	}
 }

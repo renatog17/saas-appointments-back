@@ -1,4 +1,4 @@
-package com.renato.projects.appointment.service.strategy;
+package com.renato.projects.appointment.service.strategy.tenant.save;
 
 import java.util.Optional;
 
@@ -11,7 +11,7 @@ import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.repository.TenantRepository;
 
 @Component
-public class VerificarDisponibilidadeSlug implements TenantStrategy {
+public class VerificarDisponibilidadeSlug implements SaveTenantStrategy {
 
 	private TenantRepository repository;
 

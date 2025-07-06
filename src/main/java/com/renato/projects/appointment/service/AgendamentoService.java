@@ -1,25 +1,25 @@
 package com.renato.projects.appointment.service;
 
-import org.springframework.http.HttpStatus;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.renato.projects.appointment.controller.dto.agendamento.CreateAgendamentoDTO;
 import com.renato.projects.appointment.controller.dto.agendamento.ReadAgendamentoDTO;
 import com.renato.projects.appointment.domain.Agendamento;
-import com.renato.projects.appointment.domain.Consumidor;
-import com.renato.projects.appointment.domain.Procedimento;
 import com.renato.projects.appointment.repository.AgendamentoRepository;
-import com.renato.projects.appointment.repository.ConsumidorRepository;
-import com.renato.projects.appointment.repository.ProcedimentoRepository;
+import com.renato.projects.appointment.service.strategy.agendamento.save.BuscarOuCriarConsumidor;
+import com.renato.projects.appointment.service.strategy.agendamento.save.BuscarProcedimento;
+import com.renato.projects.appointment.service.strategy.agendamento.save.SaveAgendamentoStrategy;
 
 @Service
 public class AgendamentoService {
 
 	private AgendamentoRepository agendamentoRepository;
-	private ProcedimentoRepository procedimentoRepository;
-	private ConsumidorRepository consumidorRepository;
+	private BuscarOuCriarConsumidor buscarOuCriarConsumidor;
+	private BuscarProcedimento buscarProcedimento;
 	
 	public AgendamentoService(AgendamentoRepository agendamentoRepository) {
 		super();
@@ -27,24 +27,17 @@ public class AgendamentoService {
 	}
 	
 	public ResponseEntity<ReadAgendamentoDTO> realizarAgendamento(CreateAgendamentoDTO agendamentoDTO) {
-		//obter o procedimento
-		Procedimento procedimento = procedimentoRepository.findById(agendamentoDTO.procedimentoId()).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-				);
-		//obter consumidor por email ou telefone
-		Consumidor consumidor;
-		if(agendamentoDTO.email()!=null)
-			consumidor = consumidorRepository.findByEmail(agendamentoDTO.email());
-		else {
-			if(agendamentoDTO.telefone()!=null)
-				consumidor = consumidorRepository.findByTelefone(agendamentoDTO.telefone());
-			else {
-				consumidor = new Consumidor(agendamentoDTO.telefone(), agendamentoDTO.email());
-				consumidorRepository.save(consumidor);
-			}
+		Agendamento agendamento = new Agendamento();
+		agendamento.setDateTime(agendamentoDTO.dateTime());
+		
+		List<SaveAgendamentoStrategy> strategies = new ArrayList<SaveAgendamentoStrategy>();
+		strategies.add(buscarProcedimento);
+		strategies.add(buscarOuCriarConsumidor);
+		
+		for (SaveAgendamentoStrategy saveAgendamentoStrategy : strategies) {
+			saveAgendamentoStrategy.agendamentoStrategy(agendamento, agendamentoDTO);
 		}
-		//criar agendamento
-		Agendamento agendamento = new Agendamento(consumidor, procedimento, agendamentoDTO.dateTime());
+		
 		agendamentoRepository.save(agendamento);
 		
 		return ResponseEntity.ok(new ReadAgendamentoDTO(agendamento));

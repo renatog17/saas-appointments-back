@@ -10,5 +10,7 @@ import com.renato.projects.appointment.security.domain.User;
 public interface TenantRepository extends JpaRepository<Tenant, Long>{
 
     Optional<Tenant> findBySlug(String slug);
+    //Optional<Tenant> findBySlugAndArquivadoFalse(String slug);
     Optional<Tenant> findByUser(User user);
+    //Optional<Tenant> findByUserAndArquivadoFalse(User user);
 }

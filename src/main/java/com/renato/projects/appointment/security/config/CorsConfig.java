@@ -22,7 +22,7 @@ public class CorsConfig {
                     .allowedOrigins(allowedOrigin, "https://kitkard.com.br", "http://localhost:5173")
                     //verificar se utilizando o localhost:3000, funciona em produção tbm
                 	//.allowedOrigins("http://localhost:3000")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                    .allowedMethods("PATCH","GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*");
             }
         };

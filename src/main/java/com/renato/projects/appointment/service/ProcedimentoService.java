@@ -1,6 +1,7 @@
 package com.renato.projects.appointment.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,8 @@ import com.renato.projects.appointment.repository.ProcedimentoRepository;
 import com.renato.projects.appointment.repository.TenantRepository;
 import com.renato.projects.appointment.security.domain.User;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ProcedimentoService {
 
@@ -26,6 +29,7 @@ public class ProcedimentoService {
 		this.tenantRepository = tenantRepository;
 	}
 
+	@Transactional
 	public void salvarProcedimentos(List<PostProcedimentoDTO> procedimentosDTO) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
@@ -36,6 +40,18 @@ public class ProcedimentoService {
 		}).collect(Collectors.toList());
 
 		procedimentoRepository.saveAll(procedimentos);
+	}
+
+	@Transactional
+	public void arquivarProcedimento(Long id) {
+		Optional<Procedimento> procedimento = procedimentoRepository.findById(id);
+		if(procedimento.isPresent())
+			procedimento.get().setArquivado(true);
+	}
+	
+	@Transactional
+	public void deletarProcedimento(Long id) {
+		procedimentoRepository.deleteById(id);
 	}
 
 }

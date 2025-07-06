@@ -34,6 +34,7 @@ public class Procedimento {
 	private BigDecimal valor;
 	private String descricao;
 	private String nome;
+	private Boolean arquivado;
 	@ManyToOne
 	@JoinColumn(name = "tenant_id")
 	private Tenant tenant;
@@ -45,5 +46,6 @@ public class Procedimento {
 		this.descricao = dto.descricao();
 		this.valor = dto.valor();
 		this.tenant = tenant;
+		this.arquivado = false;
 	}
 }

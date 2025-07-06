@@ -1,4 +1,4 @@
-package com.renato.projects.appointment.service.strategy;
+package com.renato.projects.appointment.service.strategy.tenant.save;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,7 +9,7 @@ import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.security.domain.User;
 
 @Component
-public class AssociarUser implements TenantStrategy{
+public class AssociarUser implements SaveTenantStrategy{
 
 	@Override
 	public void tenantStrategy(PostTenantDTO postTenantDTO, Tenant tenant) {

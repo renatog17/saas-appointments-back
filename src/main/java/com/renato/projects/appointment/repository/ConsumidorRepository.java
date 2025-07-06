@@ -1,7 +1,5 @@
 package com.renato.projects.appointment.repository;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.renato.projects.appointment.domain.Consumidor;
