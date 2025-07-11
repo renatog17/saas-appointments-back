@@ -10,16 +10,20 @@ import com.renato.projects.appointment.domain.Procedimento;
 import com.renato.projects.appointment.repository.ProcedimentoRepository;
 
 @Component
-public class BuscarProcedimento implements SaveAgendamentoStrategy{
+public class BuscarProcedimento implements SaveAgendamentoStrategy {
 
 	private ProcedimentoRepository procedimentoRepository;
 
+	public BuscarProcedimento(ProcedimentoRepository procedimentoRepository) {
+		super();
+		this.procedimentoRepository = procedimentoRepository;
+	}
+
 	@Override
 	public void agendamentoStrategy(Agendamento agendamento, CreateAgendamentoDTO agendamentoDTO) {
-		Procedimento procedimento = procedimentoRepository.findById(agendamentoDTO.procedimentoId()).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-				);
+		Procedimento procedimento = procedimentoRepository.findById(agendamentoDTO.procedimentoId())
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		agendamento.setProcedimento(procedimento);
 	}
-	
+
 }

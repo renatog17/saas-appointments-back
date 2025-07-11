@@ -1,5 +1,7 @@
 package com.renato.projects.appointment.service.strategy.agendamento.save;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 
 import com.renato.projects.appointment.controller.dto.agendamento.CreateAgendamentoDTO;
@@ -7,25 +9,31 @@ import com.renato.projects.appointment.domain.Agendamento;
 import com.renato.projects.appointment.domain.Consumidor;
 import com.renato.projects.appointment.repository.ConsumidorRepository;
 
+import jakarta.transaction.Transactional;
+
 @Component
-public class BuscarOuCriarConsumidor implements SaveAgendamentoStrategy{
+public class BuscarOuCriarConsumidor implements SaveAgendamentoStrategy {
 
 	private ConsumidorRepository consumidorRepository;
-	
+
+	public BuscarOuCriarConsumidor(ConsumidorRepository consumidorRepository) {
+		super();
+		this.consumidorRepository = consumidorRepository;
+	}
+
 	@Override
+	@Transactional
 	public void agendamentoStrategy(Agendamento agendamento, CreateAgendamentoDTO agendamentoDTO) {
-		Consumidor consumidor;
-		if(agendamentoDTO.email()!=null)
-			consumidor = consumidorRepository.findByEmail(agendamentoDTO.email());
-		else {
-			if(agendamentoDTO.telefone()!=null)
-				consumidor = consumidorRepository.findByTelefone(agendamentoDTO.telefone());
-			else {
-				consumidor = new Consumidor(agendamentoDTO.telefone(), agendamentoDTO.email());
-				consumidorRepository.save(consumidor);
-			}
-		}
-		agendamento.setConsumidor(consumidor);
+		Optional<Consumidor> consumidor = consumidorRepository.findByEmail(agendamentoDTO.email());
+		
+		
+		
+		if(consumidor.isEmpty()) {
+			Consumidor novoConsumidor = new Consumidor(agendamentoDTO.email());
+			consumidorRepository.save(novoConsumidor);
+			agendamento.setConsumidor(novoConsumidor);
+		}else 
+			agendamento.setConsumidor(consumidor.get());	
 	}
 
 }
