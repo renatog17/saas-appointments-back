@@ -30,6 +30,7 @@ public class Tenant {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Include
 	private Long id;
+	private String img;
 	private String nome;
 	private String slug;
 	@OneToOne
