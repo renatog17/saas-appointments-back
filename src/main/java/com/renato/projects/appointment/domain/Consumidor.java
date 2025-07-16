@@ -32,9 +32,10 @@ public class Consumidor {
 	@OneToMany(mappedBy = "consumidor")
 	private List<Agendamento> agendamentos = new ArrayList<>();
 	
-	public Consumidor(String email) {
+	public Consumidor(String email, String nome) {
 		super();
 		this.email = email;
+		this.nome = nome;
 	}
 	
 	

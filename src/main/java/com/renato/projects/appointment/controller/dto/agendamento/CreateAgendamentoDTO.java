@@ -6,6 +6,7 @@ public record CreateAgendamentoDTO(
 		Long procedimentoId,
 		LocalDateTime dateTime,
 		String email,
-		String telefone
+		String telefone,
+		String nome
 		) {
 }

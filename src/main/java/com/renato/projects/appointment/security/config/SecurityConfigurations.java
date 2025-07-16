@@ -32,6 +32,8 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/agendamento").permitAll()						
 						.requestMatchers(HttpMethod.GET, "/tenant/{slug}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/agendamento/{tenantId}").permitAll()
+						.requestMatchers("/uploads/**").permitAll()
 						.requestMatchers("/actuator/**").permitAll()
 						.requestMatchers(
 								"/swagger-ui.html",

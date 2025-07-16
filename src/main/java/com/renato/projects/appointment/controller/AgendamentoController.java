@@ -1,6 +1,13 @@
 package com.renato.projects.appointment.controller;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +33,10 @@ public class AgendamentoController {
 		return null;
 	}
 	
-	
+	@GetMapping("/{tenantId}")
+	public ResponseEntity<?> getAgendamentos(@PathVariable Long tenantId){
+		Map<LocalDate, List<LocalTime>> agendamentos = agendamentoService.obterAgendamentosPorTenant(tenantId);
+		return ResponseEntity.ok(agendamentos);
+		
+	}
 }
