@@ -3,10 +3,13 @@ package com.renato.projects.appointment.security.domain;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.renato.projects.appointment.security.domain.util.GerarCodigoConfirmacaoEmail;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Table(name = "users")
 @Entity(name = "users")
-public class User implements UserDetails{
+public class User implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -27,16 +30,20 @@ public class User implements UserDetails{
 	private String login;
 	private String password;
 	private UserRole role;
+	private Boolean confirmacaoEmail;
+	private String codigoConfirmacaoEmail;
 
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String login, String password, UserRole role) {
+	public User(String login, String password, UserRole role, Boolean confirmacaoEmail) {
 		this.login = login;
 		this.password = password;
 		this.role = role;
+		this.confirmacaoEmail = confirmacaoEmail;
+		this.codigoConfirmacaoEmail = GerarCodigoConfirmacaoEmail.gerarCodigo();
 	}
 
 	public Long getId() {
@@ -53,6 +60,22 @@ public class User implements UserDetails{
 
 	public UserRole getRole() {
 		return role;
+	}
+
+	public Boolean getConfirmacaoEmail() {
+		return confirmacaoEmail;
+	}
+
+	public void setConfirmacaoEmail(Boolean confirmacaoEmail) {
+		this.confirmacaoEmail = confirmacaoEmail;
+	}
+
+	public String getCodigoConfirmacaoEmail() {
+		return codigoConfirmacaoEmail;
+	}
+
+	public void setCodigoConfirmacaoEmail(String codigoConfirmacaoEmail) {
+		this.codigoConfirmacaoEmail = codigoConfirmacaoEmail;
 	}
 
 	@Override
@@ -74,8 +97,10 @@ public class User implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-		else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		if (this.role == UserRole.ADMIN)
+			return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+		else
+			return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
 	@Override

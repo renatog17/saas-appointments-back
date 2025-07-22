@@ -30,7 +30,7 @@ public class AgendamentoController {
 	@PostMapping
 	public ResponseEntity<?> criarAgendamento(@RequestBody CreateAgendamentoDTO createAgendamentoDTO){
 		agendamentoService.realizarAgendamento(createAgendamentoDTO);
-		return null;
+		return ResponseEntity.noContent().build();
 	}
 	
 	@GetMapping("/{tenantId}")

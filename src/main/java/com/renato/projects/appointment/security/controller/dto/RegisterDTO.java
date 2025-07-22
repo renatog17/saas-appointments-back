@@ -1,5 +1,9 @@
 package com.renato.projects.appointment.security.controller.dto;
 
+import java.util.List;
+
+import com.renato.projects.appointment.controller.dto.procedimento.PostProcedimentoDTO;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -12,6 +16,10 @@ public record RegisterDTO(
 		@Size(min = 8, message = "Passowrd deve ter ao menos 8 caracteres") 
 		@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=<>?{}\\[\\]~.-]).+$", 
 			message = "A senha deve conter ao menos uma letra maiúscula, um número e um caractere especial.")
-		String password) {
+		String password,
+		String name,
+		String tenant,
+		List<PostProcedimentoDTO> procedimentos
+		) {
 
 }

@@ -3,6 +3,8 @@ package com.renato.projects.appointment.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.renato.projects.appointment.utils.TitleCapitalization;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,10 +36,16 @@ public class Consumidor {
 	
 	public Consumidor(String email, String nome) {
 		super();
-		this.email = email;
-		this.nome = nome;
+		this.email = email.toLowerCase();
+		this.nome = TitleCapitalization.titleCapitalization(nome);
 	}
 	
-	
+	public void setNome(String nome) {
+		this.nome = TitleCapitalization.titleCapitalization(nome);
+	}
+
+	public void setEmail(String email) {
+		this.email = email.toLowerCase();
+	}
 	
 }

@@ -34,7 +34,6 @@ public class TenantController {
 	}
 	
 	
-	
 	@GetMapping("/{slug}")
 	public ResponseEntity<?> getTenant(@PathVariable String slug){
 		return ResponseEntity.ok(tenantService.findTenantWithProcedimentosBySlug(slug));
