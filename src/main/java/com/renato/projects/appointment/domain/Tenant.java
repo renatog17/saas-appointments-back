@@ -39,10 +39,12 @@ public class Tenant {
 	@OneToMany(mappedBy = "tenant")
 	private List<Procedimento> procedimentos = new ArrayList<>();
 	
-	public Tenant(String nome, String slug) {
+	public Tenant(String nome, String slug, List<Procedimento> procedimentos, User user) {
 		super();
 		this.nome = nome;
 		this.slug = slug;
+		this.procedimentos = procedimentos;
+		this.user = user;
 	}
 
 }

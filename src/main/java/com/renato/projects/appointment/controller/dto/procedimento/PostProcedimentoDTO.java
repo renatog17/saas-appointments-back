@@ -2,6 +2,9 @@ package com.renato.projects.appointment.controller.dto.procedimento;
 
 import java.math.BigDecimal;
 
+import com.renato.projects.appointment.domain.Procedimento;
+import com.renato.projects.appointment.domain.Tenant;
+
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,4 +24,7 @@ public record PostProcedimentoDTO(
 	    String nome
 		) {
 
+	public Procedimento toModel(Tenant tenant) {
+		return new Procedimento(this, tenant);
+	}
 }

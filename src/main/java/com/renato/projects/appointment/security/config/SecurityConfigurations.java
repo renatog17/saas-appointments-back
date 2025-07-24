@@ -30,7 +30,11 @@ public class SecurityConfigurations {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/confirmaremail").permitAll()
 						.requestMatchers(HttpMethod.GET, "/auth/{email}").permitAll()
+						.requestMatchers(HttpMethod.GET, "/auth/check").permitAll()
+						.requestMatchers(HttpMethod.POST, "/tenant").permitAll()
+						.requestMatchers(HttpMethod.GET, "/tenant/slug/{slug}").permitAll()
 						.requestMatchers(HttpMethod.POST, "/agendamento").permitAll()						
 						.requestMatchers(HttpMethod.GET, "/tenant/{slug}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/agendamento/{tenantId}").permitAll()

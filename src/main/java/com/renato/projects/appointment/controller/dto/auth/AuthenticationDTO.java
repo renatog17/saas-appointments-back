@@ -1,4 +1,4 @@
-package com.renato.projects.appointment.security.controller.dto;
+package com.renato.projects.appointment.controller.dto.auth;
 
 public record AuthenticationDTO(String login, String password) {
 

@@ -48,4 +48,14 @@ public class Procedimento {
 		this.tenant = tenant;
 		this.arquivado = false;
 	}
+
+	public Procedimento(BigDecimal valor, String descricao, String nome) {
+		super();
+		this.valor = valor;
+		this.descricao = descricao;
+		this.nome = nome;
+		this.arquivado = false;
+	}
+	
+	
 }

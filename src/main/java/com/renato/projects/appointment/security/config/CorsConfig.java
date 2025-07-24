@@ -23,7 +23,8 @@ public class CorsConfig {
                     //verificar se utilizando o localhost:3000, funciona em produção tbm
                 	//.allowedOrigins("http://localhost:3000")
                     .allowedMethods("PATCH","GET", "POST", "PUT", "DELETE", "OPTIONS")
-                    .allowedHeaders("*");
+                    .allowedHeaders("*")
+                    .allowCredentials(true);
             }
         };
     }

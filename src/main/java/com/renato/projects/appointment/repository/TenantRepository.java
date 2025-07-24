@@ -13,4 +13,5 @@ public interface TenantRepository extends JpaRepository<Tenant, Long>{
     //Optional<Tenant> findBySlugAndArquivadoFalse(String slug);
     Optional<Tenant> findByUser(User user);
     //Optional<Tenant> findByUserAndArquivadoFalse(User user);
+	Boolean existsBySlug(String slug);
 }

@@ -7,11 +7,11 @@ import com.renato.projects.appointment.service.email.EmailData;
 import com.renato.projects.appointment.service.email.EmailService;
 
 @Component
-public class ConrfirmacaoCadastroNovoUserTenant implements EnviarEmailStrategy {
+public class ConfirmacaoCadastroNovoUserTenant implements EnviarEmailStrategy {
 
 	private EmailService emailService;
 
-	public ConrfirmacaoCadastroNovoUserTenant(EmailService emailService) {
+	public ConfirmacaoCadastroNovoUserTenant(EmailService emailService) {
 		super();
 		this.emailService = emailService;
 	}

@@ -33,6 +33,10 @@ public class TenantController {
 		return ResponseEntity.created(uri).build();
 	}
 	
+	@GetMapping("/slug/{slug}")
+	public ResponseEntity<?> existTenantBySlug(@PathVariable String slug) {
+		return ResponseEntity.ok(tenantService.existTenantBySlug(slug));
+	}
 	
 	@GetMapping("/{slug}")
 	public ResponseEntity<?> getTenant(@PathVariable String slug){
