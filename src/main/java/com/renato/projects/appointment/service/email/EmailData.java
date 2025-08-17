@@ -16,7 +16,7 @@ public class EmailData {
 	public EmailData(String fromEmail, String fromName, String toEmail, String toNome, String assunto,
 			String textoSimples, String htmlConteudo) {
 		super();
-		this.fromEmail = fromEmail;
+		this.fromEmail = fromEmail.replaceAll("\\s+", "").toLowerCase();
 		this.fromName = fromName;
 		this.toEmail = toEmail;
 		this.toNome = toNome;

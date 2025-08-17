@@ -1,6 +1,7 @@
 package com.renato.projects.appointment.controller;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
@@ -19,19 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.renato.projects.appointment.controller.dto.auth.AuthenticationDTO;
 import com.renato.projects.appointment.controller.dto.auth.ConfirmarEmailDTO;
-import com.renato.projects.appointment.controller.dto.auth.RegisterDTO;
-import com.renato.projects.appointment.controller.exceptionhandler.DadosErroValidacao;
 import com.renato.projects.appointment.security.domain.User;
 import com.renato.projects.appointment.security.repository.UserRepository;
 import com.renato.projects.appointment.security.service.TokenService;
 import com.renato.projects.appointment.service.AuthenticationService;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
@@ -49,77 +43,57 @@ public class AuthenticationController {
 		this.tokenService = tokenService;
 	}
 
-//	@Autowired
-//	private ConrfirmacaoCadastroNovoUserTenant conrfirmacaoCadastroNovoUserTenant;
-
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthenticationDTO data, HttpServletResponse response) {
+		System.out.println("LOGIN");
 		String token = authenticationService.login(data).token();
-		//return ResponseEntity.ok(authenticationService.login(data));
-		 ResponseCookie cookie = ResponseCookie.from("token", token)
-			        .httpOnly(true)
-			        .secure(true) // true se estiver em HTTPS
-			        //FORTE CANDIDATO A IR PARA PROFILE
-			        .sameSite("Lax") // ou "Strict" para mais proteção
-			        .path("/")
-			        .maxAge(Duration.ofHours(2))
-			        .build();
-		 return ResponseEntity.ok()
-			        .header(HttpHeaders.SET_COOKIE, cookie.toString())
-			        .build();
-	}
-	
-	@GetMapping("/check")
-	public ResponseEntity<Void> check(@CookieValue(name = "token", required = false) String token) {
-	    if (token != null && !token.isEmpty()) {
-	        String subject = tokenService.validateToken(token);
-	        if (!subject.isEmpty()) {
-	            return ResponseEntity.ok().build(); // token válido
-	        }
-	    }
-	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-	}
-	
-	@PostMapping("/logout")
-	public ResponseEntity<?> logout(HttpServletResponse response) {
-	    ResponseCookie cookie = ResponseCookie.from("token", "")
-	        .httpOnly(true)
-	        .secure(true)
-	        .path("/")
-	        .maxAge(0) // Expira o cookie imediatamente
-	        .build();
-	    return ResponseEntity.ok()
-	        .header(HttpHeaders.SET_COOKIE, cookie.toString())
-	        .body("Logout realizado");
+		ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(true) // true se estiver em
+																								// HTTPS
+				// FORTE CANDIDATO A IR PARA PROFILE
+				.sameSite("Lax") // ou "Strict" para mais proteção
+				.path("/").maxAge(Duration.ofHours(2)).build();
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
+		// o return abaixo, é utilizado quando não se está trabalhando com token
+		// return ResponseEntity.ok(authenticationService.login(data));
 	}
 
+	@GetMapping("/check")
+	public ResponseEntity<Void> check(@CookieValue(name = "token", required = false) String token) {
+		System.out.println(LocalDate.now()+ ": VERIFICANDO SE HÁ LOGIN ATIVO");
+		if (token != null && !token.isEmpty()) {
+			String subject = tokenService.validateToken(token);
+
+			if (!subject.isEmpty()) {
+				return ResponseEntity.ok().build(); 
+			}
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletResponse response) {
+		System.out.println("LOGOUT");
+		ResponseCookie cookie = ResponseCookie.from("token", "").httpOnly(true).secure(true).path("/").maxAge(0)
+				.build();
+		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logout realizado");
+	}
 
 	@GetMapping("/{email}")
 	public ResponseEntity<?> existUserByEmail(@PathVariable String email) {
+		System.out.println("VERIFICANDO SE JÁ EXISTE EMAIL");
 		return ResponseEntity.ok(authenticationService.existUserByEmail(email));
 	}
 
-	@PostMapping("/register")
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "400", description = "Não é possível criar um novo usuário com as informações dadas", content = @Content(schema = @Schema(implementation = DadosErroValidacao.class))),
-			@ApiResponse(responseCode = "200", description = "Novo usuário cadastrado com sucesso") })
-	public ResponseEntity<?> register(@Valid @RequestBody RegisterDTO data) {
-
-		// authenticationService.register(data);
-
-		return ResponseEntity.ok().build();
-	}
-
-	// falta mapeamento aqui
 	@PostMapping("/confirmaremail")
 	@Transactional
 	public ResponseEntity<?> confirmarEmail(@RequestBody ConfirmarEmailDTO confirmarEmailDTO) {
-		Optional<UserDetails> userOptional = userRepository.findByLogin(confirmarEmailDTO.login()); 	
+		System.out.println("CONFIRMAÇÃO DE EMAIL");
+		Optional<UserDetails> userOptional = userRepository.findByLogin(confirmarEmailDTO.login());
 		if (userOptional.isPresent()) {
 			User user = (User) userOptional.get();
 			if (user.getCodigoConfirmacaoEmail().equals(confirmarEmailDTO.codigo())) {
 				user.setConfirmacaoEmail(true);
-				userRepository.save(user); // não se esqueça de salvar a alteração!
+				userRepository.save(user);
 				return ResponseEntity.noContent().build();
 			}
 		}

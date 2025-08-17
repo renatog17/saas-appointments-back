@@ -4,9 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import com.renato.projects.appointment.service.email.strategy.ConfirmacaoAgendam
 import com.renato.projects.appointment.service.strategy.agendamento.save.BuscarOuCriarConsumidor;
 import com.renato.projects.appointment.service.strategy.agendamento.save.BuscarProcedimento;
 import com.renato.projects.appointment.service.strategy.agendamento.save.SaveAgendamentoStrategy;
+import com.renato.projects.appointment.service.strategy.agendamento.save.VerificarConflitoDeHorario;
 
 import jakarta.transaction.Transactional;
 
@@ -29,15 +32,19 @@ public class AgendamentoService {
 	private BuscarOuCriarConsumidor buscarOuCriarConsumidor;
 	private BuscarProcedimento buscarProcedimento;
 	private ConfirmacaoAgendamento confirmacaoAgendamento;
+	private VerificarConflitoDeHorario verificarConflitoDeHorario;
+	
 
 	public AgendamentoService(AgendamentoRepository agendamentoRepository,
 			BuscarOuCriarConsumidor buscarOuCriarConsumidor, BuscarProcedimento buscarProcedimento,
-			ConfirmacaoAgendamento confirmacaoAgendamento) {
+			ConfirmacaoAgendamento confirmacaoAgendamento,
+			VerificarConflitoDeHorario verificarConflitoDeHorario) {
 		super();
 		this.agendamentoRepository = agendamentoRepository;
 		this.buscarOuCriarConsumidor = buscarOuCriarConsumidor;
 		this.buscarProcedimento = buscarProcedimento;
 		this.confirmacaoAgendamento = confirmacaoAgendamento;
+		this.verificarConflitoDeHorario = verificarConflitoDeHorario;
 	}
 
 	@Transactional
@@ -48,7 +55,8 @@ public class AgendamentoService {
 		List<SaveAgendamentoStrategy> strategies = new ArrayList<SaveAgendamentoStrategy>();
 		strategies.add(buscarProcedimento);
 		strategies.add(buscarOuCriarConsumidor);
-
+		strategies.add(verificarConflitoDeHorario);
+		
 		for (SaveAgendamentoStrategy saveAgendamentoStrategy : strategies) {
 			saveAgendamentoStrategy.agendamentoStrategy(agendamento, agendamentoDTO);
 		}
@@ -62,19 +70,31 @@ public class AgendamentoService {
 	}
 
 	public Map<LocalDate, List<LocalTime>> obterAgendamentosPorTenant(Long tenantId) {
-		List<Agendamento> agendamentos = agendamentoRepository.findByProcedimento_Tenant_IdAndDateTimeAfter(tenantId,
-				LocalDateTime.now());
-		Map<LocalDate, List<LocalTime>> agendamentosMap = new HashMap<LocalDate, List<LocalTime>>();
-		for (Agendamento agendamento : agendamentos) {
-			LocalDateTime dateTime = agendamento.getDateTime();
-			LocalDate date = dateTime.toLocalDate();
-			if (!agendamentosMap.containsKey(date)) {
-				agendamentosMap.put(date, new ArrayList<LocalTime>());
-			}
-			LocalTime time = dateTime.toLocalTime();
-			agendamentosMap.get(date).add(time);
-		}
+	    List<Agendamento> agendamentos = agendamentoRepository.findByProcedimento_Tenant_IdAndDateTimeAfter(
+	        tenantId, LocalDateTime.now()
+	    );
+	    Map<LocalDate, List<LocalTime>> agendamentosMap = new HashMap<>();
+	    for (Agendamento agendamento : agendamentos) {
+	        LocalDateTime dateTime = agendamento.getDateTime();
+	        LocalDate date = dateTime.toLocalDate();
+	        LocalTime time = dateTime.toLocalTime();
 
-		return agendamentosMap;
+	        agendamentosMap.computeIfAbsent(date, k -> new ArrayList<>()).add(time);
+	    }
+
+	    // Ordenar os horários de cada data
+	    for (List<LocalTime> lista : agendamentosMap.values()) {
+	        Collections.sort(lista);
+	    }
+
+	    // Retornar como TreeMap para manter as datas ordenadas
+	    return new TreeMap<>(agendamentosMap);
+	}
+	
+	public ResponseEntity<ReadAgendamentoDTO> obterAgendamentosDetalhadosPorTenant(Long tenantId){
+		List<Agendamento> agendamentos = agendamentoRepository.findByProcedimento_Tenant_IdAndDateTimeAfter(
+		        tenantId, LocalDateTime.now()
+		    );
+		return null;
 	}
 }

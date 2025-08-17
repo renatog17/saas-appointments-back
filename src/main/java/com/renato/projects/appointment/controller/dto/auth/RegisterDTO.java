@@ -1,13 +1,14 @@
 package com.renato.projects.appointment.controller.dto.auth;
 
-import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.security.domain.User;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record RegisterDTO(
+		@Email (message = "Login não respeita formato de email")
 		@NotBlank (message = "Login não pode estar em branco")
 		@Size(min = 11, message = "O login deve ser um número de telefone ou e-mail") 
 		String login,

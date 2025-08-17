@@ -37,6 +37,11 @@ public class AgendamentoController {
 	public ResponseEntity<?> getAgendamentos(@PathVariable Long tenantId){
 		Map<LocalDate, List<LocalTime>> agendamentos = agendamentoService.obterAgendamentosPorTenant(tenantId);
 		return ResponseEntity.ok(agendamentos);
-		
+	}
+	
+	@GetMapping("/details/{tenantId}")
+	public ResponseEntity<?> getAgendamentosDetalhados(@PathVariable Long tenantId){
+		// QUE BOM QUE EU DECIDI DAR UM NOVO PASSO!!!!
+		return null;
 	}
 }

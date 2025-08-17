@@ -60,13 +60,13 @@ public class TenantService {
 			tenantStrategy.tenantStrategy(postTenantDTO, tenant);
 		}
 		
-		User user = userRepository.save(tenant.getUser()); 
+		userRepository.save(tenant.getUser()); 
 		//simular erro abaixo dessa linha para verificar se o o conteúdo
 		//dessa linha vai ser salvo
 		tenantRepository.save(tenant);
 		procedimentoRepository.saveAll(tenant.getProcedimentos());
 		
-		//confirmacaoCadastroNovoUserTenant.enviarEmail(tenant.getUser());
+		confirmacaoCadastroNovoUserTenant.enviarEmail(tenant.getUser());
 		
 		return tenant;
 	}
