@@ -9,8 +9,17 @@ import com.renato.projects.appointment.domain.Procedimento;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.security.domain.User;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+
 public record PostTenantDTO(
-		String nome, 
+		@NotEmpty(message = "O nome não pode estar vazio")
+		String nome,
+		@NotEmpty(message = "O slug não pode estar vazio")
+        @Pattern(
+            regexp = "^[a-zA-Z0-9-]+$",
+            message = "O slug só pode conter letras, números e traços"
+        )
 		String slug, 
 		List<PostProcedimentoDTO> procedimentos,
 		RegisterDTO register) {
@@ -25,7 +34,7 @@ public record PostTenantDTO(
 		
 		List<Procedimento> procedimentosModel = procedimentos
 				.stream()
-				.map(dto -> dto.toModel(tenant)) // <- passando o tenant
+				.map(dto -> dto.toModel(tenant)) 
 				.collect(Collectors.toList());
 			tenant.setProcedimentos(procedimentosModel);
 		
