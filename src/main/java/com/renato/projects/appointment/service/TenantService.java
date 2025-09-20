@@ -74,6 +74,7 @@ public class TenantService {
 	public ReadTenantDTO findTenantWithProcedimentosBySlug(String slug) {
 		Tenant tenant = tenantRepository.findBySlug(slug).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
+		
 		return new ReadTenantDTO(tenant);
 	}
 	

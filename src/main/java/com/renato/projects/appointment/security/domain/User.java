@@ -3,19 +3,21 @@ package com.renato.projects.appointment.security.domain;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.renato.projects.appointment.utils.GerarCodigoConfirmacaoEmail;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Table(name = "users")
@@ -30,21 +32,28 @@ public class User implements UserDetails {
 	private String login;
 	private String password;
 	private UserRole role;
-	private String codigoConfirmacaoEmail;
-	private Boolean confirmacaoEmail;
-	
+	@OneToOne(cascade = CascadeType.ALL) // para salvar/excluir junto
+	@JoinColumn(name = "confirmacao_email_id", referencedColumnName = "id")
+	private ConfirmacaoEmail confirmacaoEmail;
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public User(String login, String password) {
-		
-		this.setConfirmacaoEmail(false);
-		this.setCodigoConfirmacaoEmail(GerarCodigoConfirmacaoEmail.gerarCodigo());
+		this.confirmacaoEmail = new ConfirmacaoEmail();
 		this.login = login;
 		this.password = new BCryptPasswordEncoder().encode(password);
 		this.role = UserRole.USER;
+	}
+
+	public ConfirmacaoEmail getConfirmacaoEmail() {
+		return confirmacaoEmail;
+	}
+
+	public void setConfirmacaoEmail(ConfirmacaoEmail confirmacaoEmail) {
+		this.confirmacaoEmail = confirmacaoEmail;
 	}
 
 	public Long getId() {
@@ -62,8 +71,6 @@ public class User implements UserDetails {
 	public UserRole getRole() {
 		return role;
 	}
-	
-	
 
 	@Override
 	public int hashCode() {
@@ -120,20 +127,12 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public String getCodigoConfirmacaoEmail() {
-		return codigoConfirmacaoEmail;
+	public  Optional<String> getCodigoConfirmacaoEmail() {
+		return this.confirmacaoEmail.getCodigoValido();
 	}
-
-	public void setCodigoConfirmacaoEmail(String codigoConfirmacaoEmail) {
-		this.codigoConfirmacaoEmail = codigoConfirmacaoEmail;
-	}
-
-	public Boolean getConfirmacaoEmail() {
-		return confirmacaoEmail;
-	}
-
-	public void setConfirmacaoEmail(Boolean confirmacaoEmail) {
-		this.confirmacaoEmail = confirmacaoEmail;
+	
+	public void validarCodigo() {
+		this.confirmacaoEmail.setConfirmacaoEmail(true);
 	}
 
 }

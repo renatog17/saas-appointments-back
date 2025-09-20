@@ -23,7 +23,7 @@ public class ConfirmacaoCadastroNovoUserTenant implements EnviarEmailStrategy {
 		// Conteúdo simples (texto plano)
 	    String textoSimples = "Olá " + user.getLogin() + ",\n\n"
 	        + "Obrigado por se cadastrar na Zendaa!\n"
-	        + "Seu código de confirmação é: " + user.getCodigoConfirmacaoEmail() + "\n\n"
+	        + "Seu código de confirmação é: " + user.getCodigoConfirmacaoEmail().get() + "\n\n"
 	        + "Por favor, insira este código na aplicação para confirmar seu e-mail.\n\n"
 	        + "Atenciosamente,\n"
 	        + "Equipe Zendaa";
@@ -34,7 +34,7 @@ public class ConfirmacaoCadastroNovoUserTenant implements EnviarEmailStrategy {
 	        + "<p>Olá <strong>" + user.getLogin() + "</strong>,</p>"
 	        + "<p>Obrigado por se cadastrar na <strong>Zendaa</strong>!</p>"
 	        + "<p>Seu código de confirmação é:</p>"
-	        + "<h3 style='color: #2d89ef;'>" + user.getCodigoConfirmacaoEmail() + "</h3>"
+	        + "<h3 style='color: #2d89ef;'>" + user.getCodigoConfirmacaoEmail().get() + "</h3>"
 	        + "<p>Insira este código na aplicação para confirmar seu e-mail.</p>"
 	        + "<br>"
 	        + "<p>Atenciosamente,<br>Equipe Zendaa</p>"

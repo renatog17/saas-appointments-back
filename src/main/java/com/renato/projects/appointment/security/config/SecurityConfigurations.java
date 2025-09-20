@@ -36,6 +36,7 @@ public class SecurityConfigurations {
 						.requestMatchers(HttpMethod.POST, "/tenant").permitAll()
 						.requestMatchers(HttpMethod.GET, "/tenant/slug/{slug}").permitAll()
 						.requestMatchers(HttpMethod.POST, "/agendamento").permitAll()						
+						.requestMatchers(HttpMethod.POST, "/confirmacaoemail").permitAll()						
 						.requestMatchers(HttpMethod.GET, "/tenant/{slug}").permitAll()
 						.requestMatchers(HttpMethod.GET, "/agendamento/{tenantId}").permitAll()
 						.requestMatchers("/uploads/**").permitAll()

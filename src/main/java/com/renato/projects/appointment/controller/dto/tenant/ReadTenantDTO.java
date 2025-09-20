@@ -5,7 +5,8 @@ import java.util.List;
 import com.renato.projects.appointment.controller.dto.procedimento.ReadProcedimentoDTO;
 import com.renato.projects.appointment.domain.Tenant;
 
-public record ReadTenantDTO(Long id, String nome, String slug, String img, List<ReadProcedimentoDTO> procedimentos) {
+public record ReadTenantDTO(Long id, String nome, String slug, String img, List<ReadProcedimentoDTO> procedimentos,
+		Boolean emailConfirmado) {
 
 	public ReadTenantDTO(Tenant tenant) {
 	    this(
@@ -16,7 +17,8 @@ public record ReadTenantDTO(Long id, String nome, String slug, String img, List<
 	        tenant.getProcedimentos().stream()
 	            .filter(p -> !Boolean.TRUE.equals(p.getArquivado())) 
 	            .map(ReadProcedimentoDTO::new)
-	            .toList()
+	            .toList(),
+	        tenant.getUser().getConfirmacaoEmail().getConfirmacaoEmail()
 	    );
 	}
 

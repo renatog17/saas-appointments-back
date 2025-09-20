@@ -2,6 +2,7 @@ package com.renato.projects.appointment.controller;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
@@ -24,6 +25,7 @@ import com.renato.projects.appointment.security.domain.User;
 import com.renato.projects.appointment.security.repository.UserRepository;
 import com.renato.projects.appointment.security.service.TokenService;
 import com.renato.projects.appointment.service.AuthenticationService;
+import com.renato.projects.appointment.service.email.strategy.ConfirmacaoCadastroNovoUserTenant;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -34,13 +36,15 @@ public class AuthenticationController {
 	private AuthenticationService authenticationService;
 	private UserRepository userRepository;
 	private TokenService tokenService;
+	private ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant;
 
 	public AuthenticationController(AuthenticationService authenticationService, UserRepository userRepository,
-			TokenService tokenService) {
+			TokenService tokenService, ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant) {
 		super();
 		this.authenticationService = authenticationService;
 		this.userRepository = userRepository;
 		this.tokenService = tokenService;
+		this.confirmacaoCadastroNovoUserTenant = confirmacaoCadastroNovoUserTenant;
 	}
 
 	@PostMapping("/login")
@@ -87,16 +91,26 @@ public class AuthenticationController {
 	@PostMapping("/confirmaremail")
 	@Transactional
 	public ResponseEntity<?> confirmarEmail(@RequestBody ConfirmarEmailDTO confirmarEmailDTO) {
-		System.out.println("CONFIRMAÇÃO DE EMAIL");
-		Optional<UserDetails> userOptional = userRepository.findByLogin(confirmarEmailDTO.login());
-		if (userOptional.isPresent()) {
-			User user = (User) userOptional.get();
-			if (user.getCodigoConfirmacaoEmail().equals(confirmarEmailDTO.codigo())) {
-				user.setConfirmacaoEmail(true);
-				userRepository.save(user);
-				return ResponseEntity.noContent().build();
+		String login = confirmarEmailDTO.login();
+		
+		System.out.println(login);
+		System.out.println(confirmarEmailDTO.codigo());
+		User user;
+		if(login.contains("@"))
+			user = (User) userRepository.findByLogin(login).orElseThrow();
+		else
+			user = (User) userRepository.findById(Long.parseLong(login)).orElseThrow();
+		
+		Optional<String> codigoConfirmacaoEmail = user.getCodigoConfirmacaoEmail();
+		if(codigoConfirmacaoEmail.isEmpty()) {
+			return ResponseEntity.badRequest().build();
+		}else {
+			if(codigoConfirmacaoEmail.get().equals(confirmarEmailDTO.codigo())){
+				user.getConfirmacaoEmail().setConfirmacaoEmail(true);
+				return ResponseEntity.ok().build();
+			}else {
+				return ResponseEntity.badRequest().build();
 			}
 		}
-		return ResponseEntity.badRequest().build();
 	}
 }
