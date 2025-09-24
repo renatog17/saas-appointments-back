@@ -12,10 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.renato.projects.appointment.controller.dto.tenant.PostTenantDTO;
 import com.renato.projects.appointment.controller.dto.tenant.ReadTenantDTO;
 import com.renato.projects.appointment.domain.Tenant;
-import com.renato.projects.appointment.repository.ProcedimentoRepository;
 import com.renato.projects.appointment.repository.TenantRepository;
 import com.renato.projects.appointment.security.domain.User;
-import com.renato.projects.appointment.security.repository.UserRepository;
 import com.renato.projects.appointment.service.email.strategy.ConfirmacaoCadastroNovoUserTenant;
 import com.renato.projects.appointment.service.strategy.tenant.save.SaveTenantStrategy;
 import com.renato.projects.appointment.service.strategy.tenant.save.VerificarDisponibilidadeSlug;
@@ -30,26 +28,21 @@ public class TenantService {
 	private VerificarDisponibilidadeUserEmail verificarDisponibilidadeUserEmail;
 	private VerificarDisponibilidadeSlug verificarDisponibilidadeSlug;
 	private ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant;
-	private UserRepository userRepository;
-	private ProcedimentoRepository procedimentoRepository;
 
 	public TenantService(TenantRepository tenantRepository,
 			VerificarDisponibilidadeUserEmail verificarDisponibilidadeUserEmail,
 			VerificarDisponibilidadeSlug verificarDisponibilidadeSlug,
-			ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant,
-			UserRepository userRepository,
-			ProcedimentoRepository procedimentoRepository) {
+			ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant) {
 		super();
 		this.tenantRepository = tenantRepository;
 		this.verificarDisponibilidadeUserEmail = verificarDisponibilidadeUserEmail;
 		this.verificarDisponibilidadeSlug = verificarDisponibilidadeSlug;
 		this.confirmacaoCadastroNovoUserTenant = confirmacaoCadastroNovoUserTenant;
-		this.userRepository = userRepository;
-		this.procedimentoRepository = procedimentoRepository;
 	}
 
 	@Transactional
 	public Tenant save(PostTenantDTO postTenantDTO) {
+		//Pattern strategy para regras de negócio.
 		List<SaveTenantStrategy> stretegies = new ArrayList<>();
 
 		stretegies.add(verificarDisponibilidadeUserEmail);
@@ -59,12 +52,8 @@ public class TenantService {
 		for (SaveTenantStrategy tenantStrategy : stretegies) {
 			tenantStrategy.tenantStrategy(postTenantDTO, tenant);
 		}
-		
-		userRepository.save(tenant.getUser()); 
-		//simular erro abaixo dessa linha para verificar se o o conteúdo
-		//dessa linha vai ser salvo
+		//Fim pattern strategy.
 		tenantRepository.save(tenant);
-		procedimentoRepository.saveAll(tenant.getProcedimentos());
 		
 		confirmacaoCadastroNovoUserTenant.enviarEmail(tenant.getUser());
 		

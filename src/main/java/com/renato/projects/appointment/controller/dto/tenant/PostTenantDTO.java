@@ -22,7 +22,8 @@ public record PostTenantDTO(
         )
 		String slug, 
 		List<PostProcedimentoDTO> procedimentos,
-		RegisterDTO register) {
+		RegisterDTO register
+		) {
 
 	public Tenant toModel() {
 		Tenant tenant = new Tenant();
@@ -34,10 +35,15 @@ public record PostTenantDTO(
 		
 		List<Procedimento> procedimentosModel = procedimentos
 				.stream()
-				.map(dto -> dto.toModel(tenant)) 
+				.map(dto -> {
+					Procedimento p = dto.toModel();
+					p.setTenant(tenant);
+					return p;
+				} )
 				.collect(Collectors.toList());
-			tenant.setProcedimentos(procedimentosModel);
 		
+		tenant.setProcedimentos(procedimentosModel);
+			
 		return tenant;
 	}
 

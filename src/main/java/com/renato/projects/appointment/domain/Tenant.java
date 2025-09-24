@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.renato.projects.appointment.security.domain.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,10 +34,10 @@ public class Tenant {
 	private String img;
 	private String nome;
 	private String slug;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	private User user;
-	@OneToMany(mappedBy = "tenant")
+	@OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Procedimento> procedimentos = new ArrayList<>();
 	
 	public Tenant(String nome, String slug, List<Procedimento> procedimentos, User user) {
