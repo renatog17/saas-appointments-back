@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.renato.projects.appointment.controller.dto.auth.RegisterDTO;
+import com.renato.projects.appointment.controller.dto.indisponibilidade.PostDisponibilidadeDTO;
 import com.renato.projects.appointment.controller.dto.procedimento.PostProcedimentoDTO;
+import com.renato.projects.appointment.domain.Disponibilidade;
 import com.renato.projects.appointment.domain.Procedimento;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.security.domain.User;
@@ -22,7 +24,8 @@ public record PostTenantDTO(
         )
 		String slug, 
 		List<PostProcedimentoDTO> procedimentos,
-		RegisterDTO register
+		RegisterDTO register,
+		List<PostDisponibilidadeDTO> disponibilidades
 		) {
 
 	public Tenant toModel() {
@@ -41,9 +44,18 @@ public record PostTenantDTO(
 					return p;
 				} )
 				.collect(Collectors.toList());
-		
 		tenant.setProcedimentos(procedimentosModel);
-			
+		
+		List<Disponibilidade> disponibilidadesModel = disponibilidades.stream()
+				 .map(disponibilidadeDto -> {
+		                Disponibilidade d = disponibilidadeDto.toModel();
+		                d.setTenant(tenant);
+		                return d;
+		            })
+				
+				.collect(Collectors.toList());
+		tenant.setDisponibilidades(disponibilidadesModel);
+		
 		return tenant;
 	}
 

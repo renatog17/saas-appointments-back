@@ -30,15 +30,15 @@ public class Disponibilidade {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "procedimento_id")
-	private Procedimento procedimento;
+	@JoinColumn(name = "tenant_id")
+	private Tenant tenant;
 	private Integer diaDaSemana;
 	private LocalTime inicio;
 	private LocalTime fim;
 	
-	public Disponibilidade(Procedimento procedimento, Integer diaDaSemana, LocalTime inicio, LocalTime fim) {
+	public Disponibilidade(Tenant tenant, Integer diaDaSemana, LocalTime inicio, LocalTime fim) {
 		super();
-		this.procedimento = procedimento;
+		this.tenant = tenant;
 		this.diaDaSemana = diaDaSemana;
 		this.inicio = inicio;
 		this.fim = fim;

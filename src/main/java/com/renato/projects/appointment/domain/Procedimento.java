@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.renato.projects.appointment.controller.dto.procedimento.PostProcedimentoDTO;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -42,12 +41,6 @@ public class Procedimento {
 	@OneToMany(mappedBy = "procedimento")
 	private List<Agendamento> agendamentos = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "procedimento", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Disponibilidade> disponibilidades;
-	
-	@OneToMany(mappedBy = "procedimento", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Indisponibilidade> indisponibilidades;
-
 	public Procedimento(PostProcedimentoDTO dto, Tenant tenant) {
 		this.nome = dto.nome();
 		this.descricao = dto.descricao();

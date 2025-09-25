@@ -40,6 +40,12 @@ public class Tenant {
 	@OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Procedimento> procedimentos = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Disponibilidade> disponibilidades;
+	
+	@OneToMany(mappedBy = "tenant", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Indisponibilidade> indisponibilidades;
+	
 	public Tenant(String nome, String slug, List<Procedimento> procedimentos, User user) {
 		super();
 		this.nome = nome;

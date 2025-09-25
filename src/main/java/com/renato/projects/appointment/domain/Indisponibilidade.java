@@ -31,15 +31,15 @@ public class Indisponibilidade {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "procedimento_id")
-	private Procedimento procedimento;
+	@JoinColumn(name = "tenant_id")
+	private Tenant tenant;
 	private LocalDate data;
 	private LocalTime inicio;
 	private LocalTime fim;
 
-	public Indisponibilidade(Procedimento procedimento, LocalDate data, LocalTime inicio, LocalTime fim) {
+	public Indisponibilidade(Tenant tenant, LocalDate data, LocalTime inicio, LocalTime fim) {
 		super();
-		this.procedimento = procedimento;
+		this.tenant = tenant;
 		this.data = data;
 		this.inicio = inicio;
 		this.fim = fim;
