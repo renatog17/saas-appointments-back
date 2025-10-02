@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.renato.projects.appointment.controller.dto.auth.RegisterDTO;
-import com.renato.projects.appointment.controller.dto.indisponibilidade.PostDisponibilidadeDTO;
+import com.renato.projects.appointment.controller.dto.disponibilidade.PostDisponibilidadeDTO;
 import com.renato.projects.appointment.controller.dto.procedimento.PostProcedimentoDTO;
 import com.renato.projects.appointment.domain.Disponibilidade;
 import com.renato.projects.appointment.domain.Procedimento;

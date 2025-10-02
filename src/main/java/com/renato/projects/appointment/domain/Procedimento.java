@@ -34,7 +34,7 @@ public class Procedimento {
 	private BigDecimal valor;
 	private String descricao;
 	private String nome;
-	private Boolean arquivado;
+	private Boolean habilitado;
 	@ManyToOne()
 	@JoinColumn(name = "tenant_id")
 	private Tenant tenant;
@@ -46,13 +46,13 @@ public class Procedimento {
 		this.descricao = dto.descricao();
 		this.valor = dto.valor();
 		this.tenant = tenant;
-		this.arquivado = false;
+		this.habilitado = false;
 	}
 	public Procedimento(PostProcedimentoDTO dto) {
 		this.nome = dto.nome();
 		this.descricao = dto.descricao();
 		this.valor = dto.valor();
-		this.arquivado = false;
+		this.habilitado = false;
 	}
 
 	public Procedimento(BigDecimal valor, String descricao, String nome) {
@@ -60,7 +60,7 @@ public class Procedimento {
 		this.valor = valor;
 		this.descricao = descricao;
 		this.nome = nome;
-		this.arquivado = false;
+		this.habilitado = false;
 	}
 	
 	

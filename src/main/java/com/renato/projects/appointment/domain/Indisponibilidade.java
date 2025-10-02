@@ -3,7 +3,7 @@ package com.renato.projects.appointment.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.renato.projects.appointment.controller.dto.disponibilidade.PostIndisponibilidadeDTO;
+import com.renato.projects.appointment.controller.dto.indisponibilidade.PostIndisponibilidadeDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

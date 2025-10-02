@@ -1,4 +1,4 @@
-package com.renato.projects.appointment.controller.dto.disponibilidade;
+package com.renato.projects.appointment.controller.dto.indisponibilidade;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

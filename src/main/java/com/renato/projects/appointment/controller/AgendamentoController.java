@@ -35,8 +35,7 @@ public class AgendamentoController {
 	
 	@GetMapping("/{tenantId}")
 	public ResponseEntity<?> getAgendamentos(@PathVariable Long tenantId){
-		Map<LocalDate, List<LocalTime>> agendamentos = agendamentoService.obterAgendamentosPorTenant(tenantId);
-		return ResponseEntity.ok(agendamentos);
+		return agendamentoService.obterAgendamentosPorTenant(tenantId);
 	}
 	
 	@GetMapping("/details/{tenantId}")

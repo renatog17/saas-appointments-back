@@ -69,26 +69,11 @@ public class AgendamentoService {
 		return ResponseEntity.ok(new ReadAgendamentoDTO(agendamento));
 	}
 
-	public Map<LocalDate, List<LocalTime>> obterAgendamentosPorTenant(Long tenantId) {
+	public ResponseEntity<List<ReadAgendamentoDTO>> obterAgendamentosPorTenant(Long tenantId) {
 	    List<Agendamento> agendamentos = agendamentoRepository.findByProcedimento_Tenant_IdAndDateTimeAfter(
 	        tenantId, LocalDateTime.now()
 	    );
-	    Map<LocalDate, List<LocalTime>> agendamentosMap = new HashMap<>();
-	    for (Agendamento agendamento : agendamentos) {
-	        LocalDateTime dateTime = agendamento.getDateTime();
-	        LocalDate date = dateTime.toLocalDate();
-	        LocalTime time = dateTime.toLocalTime();
-
-	        agendamentosMap.computeIfAbsent(date, k -> new ArrayList<>()).add(time);
-	    }
-
-	    // Ordenar os horários de cada data
-	    for (List<LocalTime> lista : agendamentosMap.values()) {
-	        Collections.sort(lista);
-	    }
-
-	    // Retornar como TreeMap para manter as datas ordenadas
-	    return new TreeMap<>(agendamentosMap);
+	    return ResponseEntity.ok(agendamentos.stream().map(ReadAgendamentoDTO::new).toList());
 	}
 	
 	public ResponseEntity<ReadAgendamentoDTO> obterAgendamentosDetalhadosPorTenant(Long tenantId){

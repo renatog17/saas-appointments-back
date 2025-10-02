@@ -46,7 +46,7 @@ public class ProcedimentoService {
 	public void arquivarProcedimento(Long id) {
 		Optional<Procedimento> procedimento = procedimentoRepository.findById(id);
 		if(procedimento.isPresent())
-			procedimento.get().setArquivado(true);
+			procedimento.get().setHabilitado(true);
 	}
 	
 	@Transactional

@@ -42,7 +42,7 @@ public class TenantService {
 
 	@Transactional
 	public Tenant save(PostTenantDTO postTenantDTO) {
-		//Pattern strategy para regras de negócio.
+		//Pattern strategy para regras de negócio{
 		List<SaveTenantStrategy> stretegies = new ArrayList<>();
 
 		stretegies.add(verificarDisponibilidadeUserEmail);
@@ -53,7 +53,7 @@ public class TenantService {
 			tenantStrategy.tenantStrategy(postTenantDTO, tenant);
 		}
 		System.out.println(tenant.toString());
-		//Fim pattern strategy.
+		//}Fim pattern strategy
 		tenantRepository.save(tenant);
 		
 		confirmacaoCadastroNovoUserTenant.enviarEmail(tenant.getUser());
