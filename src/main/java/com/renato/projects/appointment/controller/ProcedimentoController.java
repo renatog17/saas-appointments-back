@@ -35,7 +35,6 @@ public class ProcedimentoController {
 	
 	@PatchMapping("/{id}")
 	public ResponseEntity<?> arquivarProcedimento(@PathVariable Long id){
-		System.out.println("desabilitando procedimento");
 		procedimentoService.arquivarProcedimento(id);
 		return ResponseEntity.noContent().build();
 	}

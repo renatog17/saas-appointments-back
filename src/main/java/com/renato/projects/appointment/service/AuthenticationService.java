@@ -35,8 +35,4 @@ public class AuthenticationService {
 	public Boolean existUserByEmail(String email) {
 		return userRepository.existsByLogin(email);
 	}
-	
-	public void confirmarEmail() {
-		
-	}
 }

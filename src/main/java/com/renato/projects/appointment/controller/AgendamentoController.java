@@ -1,9 +1,5 @@
 package com.renato.projects.appointment.controller;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,11 +32,5 @@ public class AgendamentoController {
 	@GetMapping("/{tenantId}")
 	public ResponseEntity<?> getAgendamentos(@PathVariable Long tenantId){
 		return agendamentoService.obterAgendamentosPorTenant(tenantId);
-	}
-	
-	@GetMapping("/details/{tenantId}")
-	public ResponseEntity<?> getAgendamentosDetalhados(@PathVariable Long tenantId){
-		// QUE BOM QUE EU DECIDI DAR UM NOVO PASSO!!!!
-		return null;
 	}
 }

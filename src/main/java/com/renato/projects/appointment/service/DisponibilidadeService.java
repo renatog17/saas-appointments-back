@@ -1,7 +1,5 @@
 package com.renato.projects.appointment.service;
 
-import java.time.LocalTime;
-import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;

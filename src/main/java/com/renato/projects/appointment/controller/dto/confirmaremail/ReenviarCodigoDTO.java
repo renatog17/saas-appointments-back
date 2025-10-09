@@ -1,5 +1,5 @@
 package com.renato.projects.appointment.controller.dto.confirmaremail;
 
-public record ReenviarCodigoDTO(String loginOrId) {
+public record ReenviarCodigoDTO(String email) {
 
 }

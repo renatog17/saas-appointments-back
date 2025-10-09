@@ -1,14 +1,8 @@
 package com.renato.projects.appointment.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -74,12 +68,5 @@ public class AgendamentoService {
 	        tenantId, LocalDateTime.now()
 	    );
 	    return ResponseEntity.ok(agendamentos.stream().map(ReadAgendamentoDTO::new).toList());
-	}
-	
-	public ResponseEntity<ReadAgendamentoDTO> obterAgendamentosDetalhadosPorTenant(Long tenantId){
-		List<Agendamento> agendamentos = agendamentoRepository.findByProcedimento_Tenant_IdAndDateTimeAfter(
-		        tenantId, LocalDateTime.now()
-		    );
-		return null;
 	}
 }

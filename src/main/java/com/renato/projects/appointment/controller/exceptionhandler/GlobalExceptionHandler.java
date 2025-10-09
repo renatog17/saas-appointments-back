@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.renato.projects.appointment.controller.exceptionhandler.exception.CodigoAuxiliarExpiradoException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -31,5 +33,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(InternalAuthenticationServiceException.class)
 	public ResponseEntity<?> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException ex){
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+	}
+	
+	@ExceptionHandler(CodigoAuxiliarExpiradoException.class)
+	public ResponseEntity<?> handleCodigoAuxiliarExpiradoException(CodigoAuxiliarExpiradoException ex){
+		return ResponseEntity.status(HttpStatus.GONE).build();
 	}
 }

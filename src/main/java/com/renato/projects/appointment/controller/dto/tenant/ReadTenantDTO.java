@@ -22,7 +22,7 @@ public record ReadTenantDTO(Long id, String nome, String slug, String img, List<
 	        tenant.getDisponibilidades().stream()
 	        	.map(ReadDisponibilidadeDTO::new)
 	        	.toList(),
-	        tenant.getUser().getConfirmacaoEmail().getConfirmacaoEmail()
+	        tenant.getUser().getConfirmacaoEmail()
 	    );
 	}
 

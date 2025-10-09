@@ -3,7 +3,6 @@ package com.renato.projects.appointment.security.domain;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -32,9 +31,15 @@ public class User implements UserDetails {
 	private String login;
 	private String password;
 	private UserRole role;
-	@OneToOne(cascade = CascadeType.ALL) // para salvar/excluir junto
-	@JoinColumn(name = "confirmacao_email_id", referencedColumnName = "id")
-	private ConfirmacaoEmail confirmacaoEmail;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "codigo_auxiliar_id", referencedColumnName = "id")
+	private CodigoAuxiliar codigoAuxiliar;
+	private Boolean confirmacaoEmail;
+	
+	
+	public CodigoAuxiliar getCodigoAuxiliar() {
+		return codigoAuxiliar;
+	}
 
 	public User() {
 		super();
@@ -42,18 +47,15 @@ public class User implements UserDetails {
 	}
 
 	public User(String login, String password) {
-		this.confirmacaoEmail = new ConfirmacaoEmail();
+		this.codigoAuxiliar = new CodigoAuxiliar();
 		this.login = login;
 		this.password = new BCryptPasswordEncoder().encode(password);
 		this.role = UserRole.USER;
+		this.confirmacaoEmail = false;
 	}
 
-	public ConfirmacaoEmail getConfirmacaoEmail() {
+	public Boolean getConfirmacaoEmail() {
 		return confirmacaoEmail;
-	}
-
-	public void setConfirmacaoEmail(ConfirmacaoEmail confirmacaoEmail) {
-		this.confirmacaoEmail = confirmacaoEmail;
 	}
 
 	public Long getId() {
@@ -70,6 +72,10 @@ public class User implements UserDetails {
 
 	public UserRole getRole() {
 		return role;
+	}
+	
+	public void confirmarEmail() {
+		this.confirmacaoEmail = true;
 	}
 
 	@Override
@@ -125,14 +131,6 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
-	}
-
-	public  Optional<String> getCodigoConfirmacaoEmail() {
-		return this.confirmacaoEmail.getCodigoValido();
-	}
-	
-	public void validarCodigo() {
-		this.confirmacaoEmail.setConfirmacaoEmail(true);
 	}
 
 }

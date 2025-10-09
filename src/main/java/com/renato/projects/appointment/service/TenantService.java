@@ -52,7 +52,6 @@ public class TenantService {
 		for (SaveTenantStrategy tenantStrategy : stretegies) {
 			tenantStrategy.tenantStrategy(postTenantDTO, tenant);
 		}
-		System.out.println(tenant.toString());
 		//}Fim pattern strategy
 		tenantRepository.save(tenant);
 		

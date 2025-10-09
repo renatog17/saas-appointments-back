@@ -1,16 +1,11 @@
 package com.renato.projects.appointment.controller;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,13 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.renato.projects.appointment.controller.dto.auth.AuthenticationDTO;
-import com.renato.projects.appointment.controller.dto.auth.ConfirmarEmailDTO;
-import com.renato.projects.appointment.security.domain.User;
-import com.renato.projects.appointment.security.repository.UserRepository;
 import com.renato.projects.appointment.security.service.TokenService;
 import com.renato.projects.appointment.service.AuthenticationService;
-import com.renato.projects.appointment.service.email.strategy.ConfirmacaoCadastroNovoUserTenant;
-
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
@@ -34,24 +24,21 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthenticationController {
 
 	private AuthenticationService authenticationService;
-	private UserRepository userRepository;
 	private TokenService tokenService;
-	private ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant;
+	
 
-	public AuthenticationController(AuthenticationService authenticationService, UserRepository userRepository,
-			TokenService tokenService, ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant) {
+	public AuthenticationController(AuthenticationService authenticationService, 
+			TokenService tokenService) {
 		super();
 		this.authenticationService = authenticationService;
-		this.userRepository = userRepository;
 		this.tokenService = tokenService;
-		this.confirmacaoCadastroNovoUserTenant = confirmacaoCadastroNovoUserTenant;
+		
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthenticationDTO data, HttpServletResponse response) {
-		System.out.println("LOGIN");
 		String token = authenticationService.login(data).token();
-		ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(true) // true se estiver em
+		ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(false) // true se estiver em
 																								// HTTPS
 				// FORTE CANDIDATO A IR PARA PROFILE
 				.sameSite("Lax") // ou "Strict" para mais proteção
@@ -63,7 +50,6 @@ public class AuthenticationController {
 
 	@GetMapping("/check")
 	public ResponseEntity<Void> check(@CookieValue(name = "token", required = false) String token) {
-		System.out.println(LocalDate.now()+ ": VERIFICANDO SE HÁ LOGIN ATIVO");
 		if (token != null && !token.isEmpty()) {
 			String subject = tokenService.validateToken(token);
 
@@ -76,7 +62,6 @@ public class AuthenticationController {
 
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletResponse response) {
-		System.out.println("LOGOUT");
 		ResponseCookie cookie = ResponseCookie.from("token", "").httpOnly(true).secure(true).path("/").maxAge(0)
 				.build();
 		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logout realizado");
@@ -84,33 +69,7 @@ public class AuthenticationController {
 
 	@GetMapping("/{email}")
 	public ResponseEntity<?> existUserByEmail(@PathVariable String email) {
-		System.out.println("VERIFICANDO SE JÁ EXISTE EMAIL");
 		return ResponseEntity.ok(authenticationService.existUserByEmail(email));
 	}
 
-	@PostMapping("/confirmaremail")
-	@Transactional
-	public ResponseEntity<?> confirmarEmail(@RequestBody ConfirmarEmailDTO confirmarEmailDTO) {
-		String login = confirmarEmailDTO.login();
-		
-		System.out.println(login);
-		System.out.println(confirmarEmailDTO.codigo());
-		User user;
-		if(login.contains("@"))
-			user = (User) userRepository.findByLogin(login).orElseThrow();
-		else
-			user = (User) userRepository.findById(Long.parseLong(login)).orElseThrow();
-		
-		Optional<String> codigoConfirmacaoEmail = user.getCodigoConfirmacaoEmail();
-		if(codigoConfirmacaoEmail.isEmpty()) {
-			return ResponseEntity.badRequest().build();
-		}else {
-			if(codigoConfirmacaoEmail.get().equals(confirmarEmailDTO.codigo())){
-				user.getConfirmacaoEmail().setConfirmacaoEmail(true);
-				return ResponseEntity.ok().build();
-			}else {
-				return ResponseEntity.badRequest().build();
-			}
-		}
-	}
 }
