@@ -8,6 +8,6 @@ import com.renato.projects.appointment.domain.Consumidor;
 
 public interface ConsumidorRepository extends JpaRepository<Consumidor, Long>{
 
-	Consumidor findByTelefone(String telefone);
+	Optional<Consumidor> findByTelefone(String telefone);
 	Optional<Consumidor> findByEmail(String email);
 }

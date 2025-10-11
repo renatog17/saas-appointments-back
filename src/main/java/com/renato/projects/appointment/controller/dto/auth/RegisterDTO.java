@@ -14,8 +14,8 @@ public record RegisterDTO(
 		String login,
 		@NotBlank (message = "Password não pode estar em branco")
 		@Size(min = 8, message = "Passowrd deve ter ao menos 8 caracteres") 
-		@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=<>?{}\\[\\]~.-]).+$", 
-			message = "A senha deve conter ao menos uma letra maiúscula, um número e um caractere especial.")
+		/*@Pattern(regexp = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+=<>?{}\\[\\]~.-]).+$", 
+			message = "A senha deve conter ao menos uma letra maiúscula, um número e um caractere especial.")*/
 		String password
 		
 		) {

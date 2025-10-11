@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.renato.projects.appointment.controller.dto.procedimento.PostProcedimentoDTO;
+import com.renato.projects.appointment.controller.dto.procedimento.PutProcedimentoDTO;
+import com.renato.projects.appointment.controller.dto.procedimento.ReadProcedimentoDTO;
 import com.renato.projects.appointment.domain.Procedimento;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.repository.ProcedimentoRepository;
@@ -41,17 +44,18 @@ public class ProcedimentoService {
 
 		procedimentoRepository.saveAll(procedimentos);
 	}
-
-	@Transactional
-	public void arquivarProcedimento(Long id) {
-		Optional<Procedimento> procedimento = procedimentoRepository.findById(id);
-		if(procedimento.isPresent())
-			procedimento.get().setHabilitado(true);
-	}
 	
 	@Transactional
 	public void deletarProcedimento(Long id) {
-		procedimentoRepository.deleteById(id);
+		Procedimento procedimento = procedimentoRepository.findById(id).orElseThrow();
+		procedimento.desabilitar();
+	}
+
+	@Transactional
+	public ReadProcedimentoDTO editarProcedimento(Long id, PutProcedimentoDTO putProcedimentoDTO) {
+		System.out.println(putProcedimentoDTO.toString());
+		return procedimentoRepository.getReferenceById(id).atualizar(putProcedimentoDTO);
+		
 	}
 
 }

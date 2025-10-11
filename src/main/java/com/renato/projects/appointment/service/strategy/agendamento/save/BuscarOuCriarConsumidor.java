@@ -24,14 +24,18 @@ public class BuscarOuCriarConsumidor implements SaveAgendamentoStrategy {
 	@Override
 	@Transactional
 	public void agendamentoStrategy(Agendamento agendamento, CreateAgendamentoDTO agendamentoDTO) {
-		Optional<Consumidor> consumidor = consumidorRepository.findByEmail(agendamentoDTO.email());
+		
+		Optional<Consumidor> consumidor  = consumidorRepository.findByEmail(agendamentoDTO.email());
+			
 		
 		if(consumidor.isEmpty()) {
-			Consumidor novoConsumidor = new Consumidor(agendamentoDTO.email(), agendamentoDTO.nome());
+			Consumidor novoConsumidor = new Consumidor(agendamentoDTO.email(), agendamentoDTO.nome(), agendamentoDTO.telefone());
 			consumidorRepository.save(novoConsumidor);
 			agendamento.setConsumidor(novoConsumidor);
 		}else {
+			//adicionar algum novo contato caso tenha vindo
 			Consumidor consumidorExistente = consumidor.get();
+			consumidorExistente.setTelefone(agendamentoDTO.telefone());
 			consumidorExistente.setNome(agendamentoDTO.nome());
 			agendamento.setConsumidor(consumidorExistente);	
 		}

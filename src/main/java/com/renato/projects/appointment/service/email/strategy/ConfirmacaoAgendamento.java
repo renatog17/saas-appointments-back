@@ -46,7 +46,7 @@ public class ConfirmacaoAgendamento implements EnviarEmailStrategy {
 				+ "  <p style=\"margin-top: 30px;\">Atenciosamente,<br>Equipe ZendaaVIP</p>" + "</div>" + "</body>"
 				+ "</html>";
 
-		EmailData emailData = new EmailData(agendamento.getProcedimento().getTenant().getNome(),
+		EmailData emailData = new EmailData(agendamento.getProcedimento().getTenant().getSlug(),
 				agendamento.getProcedimento().getTenant().getNome(), agendamento.getConsumidor().getEmail(),
 				agendamento.getConsumidor().getNome(),
 				"📬 Confirmação de agendamento com " + agendamento.getProcedimento().getTenant().getSlug(),

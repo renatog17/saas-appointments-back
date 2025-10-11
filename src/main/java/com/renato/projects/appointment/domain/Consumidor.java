@@ -34,10 +34,11 @@ public class Consumidor {
 	@OneToMany(mappedBy = "consumidor")
 	private List<Agendamento> agendamentos = new ArrayList<>();
 	
-	public Consumidor(String email, String nome) {
+	public Consumidor(String email, String nome, String telefone) {
 		super();
 		this.email = email.toLowerCase();
 		this.nome = TitleCapitalization.titleCapitalization(nome);
+		this.telefone = telefone;
 	}
 	
 	public void setNome(String nome) {
@@ -46,6 +47,5 @@ public class Consumidor {
 
 	public void setEmail(String email) {
 		this.email = email.toLowerCase();
-	}
-	
+	}	
 }

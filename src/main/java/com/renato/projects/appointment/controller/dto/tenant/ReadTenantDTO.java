@@ -16,7 +16,7 @@ public record ReadTenantDTO(Long id, String nome, String slug, String img, List<
 	        tenant.getSlug(),
 	        tenant.getImg(),
 	        tenant.getProcedimentos().stream()
-	            .filter(p -> !Boolean.TRUE.equals(p.getHabilitado())) 
+	            .filter(p -> Boolean.TRUE.equals(p.getHabilitado())) 
 	            .map(ReadProcedimentoDTO::new)
 	            .toList(),
 	        tenant.getDisponibilidades().stream()

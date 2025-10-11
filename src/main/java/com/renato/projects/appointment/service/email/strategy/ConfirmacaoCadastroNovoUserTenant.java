@@ -2,7 +2,7 @@ package com.renato.projects.appointment.service.email.strategy;
 
 import org.springframework.stereotype.Component;
 
-import com.renato.projects.appointment.security.domain.User;
+import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.service.email.EmailData;
 import com.renato.projects.appointment.service.email.EmailService;
 
@@ -18,12 +18,12 @@ public class ConfirmacaoCadastroNovoUserTenant implements EnviarEmailStrategy {
 
 	@Override
 	public void enviarEmail(Object object) {
-		User user = (User) object;
+		Tenant tenant = (Tenant) object;
 		
 		// Conteúdo simples (texto plano)
-	    String textoSimples = "Olá " + user.getLogin() + ",\n\n"
+	    String textoSimples = "Olá " + tenant.getNome() + ",\n\n"
 	        + "Obrigado por se cadastrar na Zendaa!\n"
-	        + "Seu código de confirmação é: " + user.getCodigoAuxiliar().getCodigo()+ "\n\n"
+	        + "Seu código de confirmação é: " + tenant.getUser().getCodigoAuxiliar().getCodigo()+ "\n\n"
 	        + "Por favor, insira este código na aplicação para confirmar seu e-mail.\n\n"
 	        + "Atenciosamente,\n"
 	        + "Equipe Zendaa";
@@ -31,16 +31,16 @@ public class ConfirmacaoCadastroNovoUserTenant implements EnviarEmailStrategy {
 	    // Conteúdo HTML (para e-mails com formatação)
 	    String htmlConteudo = "<html><body>"
 	        + "<h2>Confirmação de inscrição</h2>"
-	        + "<p>Olá <strong>" + user.getLogin() + "</strong>,</p>"
+	        + "<p>Olá <strong>" + tenant.getNome()+ "</strong>,</p>"
 	        + "<p>Obrigado por se cadastrar na <strong>Zendaa</strong>!</p>"
 	        + "<p>Seu código de confirmação é:</p>"
-	        + "<h3 style='color: #2d89ef;'>" + user.getCodigoAuxiliar().getCodigo() + "</h3>"
+	        + "<h3 style='color: #2d89ef;'>" + tenant.getUser().getCodigoAuxiliar().getCodigo() + "</h3>"
 	        + "<p>Insira este código na aplicação para confirmar seu e-mail.</p>"
 	        + "<br>"
 	        + "<p>Atenciosamente,<br>Equipe Zendaa</p>"
 	        + "</body></html>";
 		
-		EmailData emailData = new EmailData("zendaa", "Equipe Zendaa", user.getLogin(), " ", "Confirmação de inscrição", textoSimples, htmlConteudo);
+		EmailData emailData = new EmailData("zendaa", "Equipe Zendaa", tenant.getUser().getLogin(), " ", "Confirmação de inscrição", textoSimples, htmlConteudo);
 		
 		emailService.sendEmail(emailData);
 	}

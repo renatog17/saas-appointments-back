@@ -38,7 +38,7 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthenticationDTO data, HttpServletResponse response) {
 		String token = authenticationService.login(data).token();
-		ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(false) // true se estiver em
+		ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(true) // true se estiver em
 																								// HTTPS
 				// FORTE CANDIDATO A IR PARA PROFILE
 				.sameSite("Lax") // ou "Strict" para mais proteção

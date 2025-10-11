@@ -45,7 +45,8 @@ public class AgendamentoService {
 	public ResponseEntity<ReadAgendamentoDTO> realizarAgendamento(CreateAgendamentoDTO agendamentoDTO) {
 		Agendamento agendamento = new Agendamento();
 		agendamento.setDateTime(agendamentoDTO.dateTime());
-
+		
+		//inicio strategy{
 		List<SaveAgendamentoStrategy> strategies = new ArrayList<SaveAgendamentoStrategy>();
 		strategies.add(buscarProcedimento);
 		strategies.add(buscarOuCriarConsumidor);
@@ -54,7 +55,7 @@ public class AgendamentoService {
 		for (SaveAgendamentoStrategy saveAgendamentoStrategy : strategies) {
 			saveAgendamentoStrategy.agendamentoStrategy(agendamento, agendamentoDTO);
 		}
-
+		//}fim strategy
 		agendamentoRepository.save(agendamento);
 
 		confirmacaoAgendamento.enviarEmail(agendamento);

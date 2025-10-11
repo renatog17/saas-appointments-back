@@ -49,7 +49,7 @@ public class LoginCodigoUnicoController {
 				
 				var token = tokenService.generateToken(user);
 				System.out.println(token);
-				ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(false)
+				ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(true)
 						.sameSite("Lax")
 						.path("/").maxAge(Duration.ofHours(2)).build();
 				return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();

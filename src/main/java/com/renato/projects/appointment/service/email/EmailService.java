@@ -44,8 +44,6 @@ public class EmailService {
 
 		try {
 			response = client.post(request);
-			System.out.println(response.getStatus());
-			System.out.println(response.getData());
 		} catch (MailjetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
