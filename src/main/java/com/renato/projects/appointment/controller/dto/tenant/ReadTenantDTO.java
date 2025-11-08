@@ -6,7 +6,7 @@ import com.renato.projects.appointment.controller.dto.disponibilidade.ReadDispon
 import com.renato.projects.appointment.controller.dto.procedimento.ReadProcedimentoDTO;
 import com.renato.projects.appointment.domain.Tenant;
 
-public record ReadTenantDTO(Long id, String nome, String slug, String img, List<ReadProcedimentoDTO> procedimentos,
+public record ReadTenantDTO(Long id, String nome, String slug, String img, String coverImg, List<ReadProcedimentoDTO> procedimentos,
 		List<ReadDisponibilidadeDTO> disponibilidades,	Boolean emailConfirmado) {
 
 	public ReadTenantDTO(Tenant tenant) {
@@ -15,6 +15,7 @@ public record ReadTenantDTO(Long id, String nome, String slug, String img, List<
 	        tenant.getNome(),
 	        tenant.getSlug(),
 	        tenant.getImg(),
+	        tenant.getCoverImg(),
 	        tenant.getProcedimentos().stream()
 	            .filter(p -> Boolean.TRUE.equals(p.getHabilitado())) 
 	            .map(ReadProcedimentoDTO::new)

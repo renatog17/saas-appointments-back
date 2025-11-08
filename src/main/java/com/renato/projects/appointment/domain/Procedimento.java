@@ -37,6 +37,7 @@ public class Procedimento {
 	private String descricao;
 	private String nome;
 	private Boolean habilitado;
+	private String image;
 	@ManyToOne()
 	@JoinColumn(name = "tenant_id")
 	private Tenant tenant;

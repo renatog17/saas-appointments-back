@@ -32,6 +32,7 @@ public class Tenant {
 	@EqualsAndHashCode.Include
 	private Long id;
 	private String img;
+	private String coverImg;
 	private String nome;
 	private String slug;
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

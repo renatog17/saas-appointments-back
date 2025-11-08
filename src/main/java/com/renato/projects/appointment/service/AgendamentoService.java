@@ -70,4 +70,8 @@ public class AgendamentoService {
 	    );
 	    return ResponseEntity.ok(agendamentos.stream().map(ReadAgendamentoDTO::new).toList());
 	}
+
+	public void excluirAgendamentoPorId(Long id) {
+		agendamentoRepository.deleteById(id);
+	}
 }

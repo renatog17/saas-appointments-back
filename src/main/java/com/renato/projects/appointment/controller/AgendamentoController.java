@@ -2,6 +2,7 @@ package com.renato.projects.appointment.controller;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,5 +33,12 @@ public class AgendamentoController {
 	@GetMapping("/{tenantId}")
 	public ResponseEntity<?> getAgendamentos(@PathVariable Long tenantId){
 		return agendamentoService.obterAgendamentosPorTenant(tenantId);
+	}
+	
+	@DeleteMapping("/{tenantId}")
+	public void exluirAgendamento(@PathVariable Long tenantId){
+		//alterar status do procedimento para cancelado?
+		//tem que informar a quem cadastrou
+		agendamentoService.excluirAgendamentoPorId(tenantId);
 	}
 }
