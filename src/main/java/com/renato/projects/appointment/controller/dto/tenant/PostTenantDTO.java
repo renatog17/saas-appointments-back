@@ -18,11 +18,11 @@ public record PostTenantDTO(
 		@NotEmpty(message = "O nome não pode estar vazio")
 		String nome,
 		@NotEmpty(message = "O slug não pode estar vazio")
-        @Pattern(
-            regexp = "^[a-zA-Z0-9-]+$",
-            message = "O slug só pode conter letras, números e traços"
-        )
-		String slug, 
+		@Pattern(
+			    regexp = "^[a-z0-9-]+$",
+			    message = "O slug só pode conter letras minúsculas, números e traços"
+			)
+		String slug,
 		List<PostProcedimentoDTO> procedimentos,
 		RegisterDTO register,
 		List<PostDisponibilidadeDTO> disponibilidades

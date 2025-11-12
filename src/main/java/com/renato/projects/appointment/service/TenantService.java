@@ -2,6 +2,7 @@ package com.renato.projects.appointment.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -11,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.renato.projects.appointment.controller.dto.tenant.PostTenantDTO;
 import com.renato.projects.appointment.controller.dto.tenant.ReadTenantDTO;
+import com.renato.projects.appointment.controller.dto.tenant.UpdateSlugDTO;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.repository.TenantRepository;
 import com.renato.projects.appointment.security.domain.User;
@@ -28,6 +30,7 @@ public class TenantService {
 	private VerificarDisponibilidadeUserEmail verificarDisponibilidadeUserEmail;
 	private VerificarDisponibilidadeSlug verificarDisponibilidadeSlug;
 	private ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant;
+	private Tenant orElseThrow;
 
 	public TenantService(TenantRepository tenantRepository,
 			VerificarDisponibilidadeUserEmail verificarDisponibilidadeUserEmail,
@@ -76,6 +79,20 @@ public class TenantService {
 
 	public Boolean existTenantBySlug(String slug) {
 		return tenantRepository.existsBySlug(slug);	
+	}
+
+	@Transactional
+	public void updateSlug(String slug, UpdateSlugDTO updateSlugDTO) {
+		if(existTenantBySlug(updateSlugDTO.slug())) {
+			throw new ResponseStatusException(
+		            HttpStatus.CONFLICT,
+		            "Já existe um tenant com esse slug."
+		        );
+		}
+		tenantRepository
+			.findBySlug(slug).orElseThrow(
+					() -> new NoSuchElementException()).setSlug(updateSlugDTO.slug()
+			);
 	}
 
 }

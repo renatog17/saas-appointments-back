@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.renato.projects.appointment.controller.dto.tenant.PostTenantDTO;
+import com.renato.projects.appointment.controller.dto.tenant.UpdateSlugDTO;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.service.TenantService;
 
@@ -48,5 +49,11 @@ public class TenantController {
 	@GetMapping()
 	public ResponseEntity<?> getTenant(){
 		return ResponseEntity.ok(tenantService.findTenantWithProcedimentosByUserAuthenticated());
+	}
+	
+	@PostMapping("/edit/{slug}")
+	public ResponseEntity<?> updateSlug(@RequestBody UpdateSlugDTO updateSlugDTO, @PathVariable String slug){
+		tenantService.updateSlug(slug, updateSlugDTO);
+		return ResponseEntity.ok().build();
 	}
 }
