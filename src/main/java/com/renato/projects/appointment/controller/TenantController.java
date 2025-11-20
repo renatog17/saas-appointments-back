@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.renato.projects.appointment.controller.dto.tenant.PostTenantDTO;
+import com.renato.projects.appointment.controller.dto.tenant.UpdateDuracaoDTO;
 import com.renato.projects.appointment.controller.dto.tenant.UpdateSlugDTO;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.service.TenantService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/tenant")
@@ -59,8 +62,8 @@ public class TenantController {
 	}
 	
 	@PutMapping()
-	public ResponseEntity<?> updateDuracacaoProcedimentos(@RequestBody Integer duracao){
-		tenantService.updateDuracaoProcedimentos(duracao);
+	public ResponseEntity<?> updateDuracacaoProcedimentos(@RequestBody @Valid UpdateDuracaoDTO duracaoDTO){
+		tenantService.updateDuracaoProcedimentos(duracaoDTO.duracao());
 		return ResponseEntity.ok().build();
 	}
 }
