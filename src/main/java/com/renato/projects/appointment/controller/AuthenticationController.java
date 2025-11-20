@@ -2,6 +2,7 @@ package com.renato.projects.appointment.controller;
 
 import java.time.Duration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -17,19 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 import com.renato.projects.appointment.controller.dto.auth.AuthenticationDTO;
 import com.renato.projects.appointment.security.service.TokenService;
 import com.renato.projects.appointment.service.AuthenticationService;
+
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-	private AuthenticationService authenticationService;
-	private TokenService tokenService;
+	private final AuthenticationService authenticationService;
+	private final TokenService tokenService;
 	
+	@Value("${app.cookie.secure}")
+    private boolean cookieSecure;
 
+    @Value("${app.cookie.same-site}")
+    private String cookieSameSite;
+
+    @Value("${app.cookie.max-age-hours}")
+    private long cookieMaxAgeHours;
+	
 	public AuthenticationController(AuthenticationService authenticationService, 
 			TokenService tokenService) {
-		super();
 		this.authenticationService = authenticationService;
 		this.tokenService = tokenService;
 		
@@ -38,14 +47,20 @@ public class AuthenticationController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthenticationDTO data, HttpServletResponse response) {
 		String token = authenticationService.login(data).token();
-		ResponseCookie cookie = ResponseCookie.from("token", token).httpOnly(true).secure(true) // true se estiver em
-																								// HTTPS
-				// FORTE CANDIDATO A IR PARA PROFILE
-				.sameSite("Lax") // ou "Strict" para mais proteção
-				.path("/").maxAge(Duration.ofHours(2)).build();
-		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).build();
-		// o return abaixo, é utilizado quando não se está trabalhando com token
-		// return ResponseEntity.ok(authenticationService.login(data));
+		ResponseCookie cookie = 
+				ResponseCookie
+					.from("token", token)
+					.httpOnly(true)
+					.secure(cookieSecure)
+					.sameSite(cookieSameSite)
+					.path("/")
+					.maxAge(Duration.ofHours(cookieMaxAgeHours))
+					.build();
+		
+		return ResponseEntity
+					.ok()
+					.header(HttpHeaders.SET_COOKIE, cookie.toString())
+					.build();
 	}
 
 	@GetMapping("/check")
@@ -57,14 +72,26 @@ public class AuthenticationController {
 				return ResponseEntity.ok().build(); 
 			}
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		return ResponseEntity
+				.status(HttpStatus.UNAUTHORIZED)
+				.build();
 	}
 
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletResponse response) {
-		ResponseCookie cookie = ResponseCookie.from("token", "").httpOnly(true).secure(true).path("/").maxAge(0)
-				.build();
-		return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logout realizado");
+		ResponseCookie cookie = 
+				ResponseCookie
+					.from("token", "")
+					.httpOnly(true)
+					.secure(cookieSecure)
+					.sameSite(cookieSameSite)
+					.path("/")
+					.maxAge(0)
+					.build();
+		return ResponseEntity
+				.ok()
+				.header(HttpHeaders.SET_COOKIE, cookie.toString())
+				.body("Logout realizado");
 	}
 
 	@GetMapping("/{email}")

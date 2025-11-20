@@ -33,6 +33,7 @@ public class Agendamento {
 	@JoinColumn(name = "procedimento_id")
 	private Procedimento procedimento;
 	private LocalDateTime dateTime;
+	private LocalDateTime dateTimeTermino;
 	
 	public Agendamento(Consumidor consumidor, Procedimento procedimento, LocalDateTime dateTime) {
 		super();
@@ -40,6 +41,4 @@ public class Agendamento {
 		this.procedimento = procedimento;
 		this.dateTime = dateTime;
 	}
-	
-	
 }

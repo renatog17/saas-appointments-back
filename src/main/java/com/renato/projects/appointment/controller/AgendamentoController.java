@@ -37,7 +37,6 @@ public class AgendamentoController {
 	
 	@DeleteMapping("/{tenantId}")
 	public void exluirAgendamento(@PathVariable Long tenantId){
-		//alterar status do procedimento para cancelado?
 		//tem que informar a quem cadastrou
 		agendamentoService.excluirAgendamentoPorId(tenantId);
 	}

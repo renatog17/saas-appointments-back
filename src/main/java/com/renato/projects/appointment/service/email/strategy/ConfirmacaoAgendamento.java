@@ -7,7 +7,7 @@ import com.renato.projects.appointment.service.email.EmailData;
 import com.renato.projects.appointment.service.email.EmailService;
 
 @Component
-public class ConfirmacaoAgendamento implements EnviarEmailStrategy {
+public class ConfirmacaoAgendamento implements IEnviarEmailStrategy {
 
 	private EmailService emailService;
 
@@ -18,7 +18,7 @@ public class ConfirmacaoAgendamento implements EnviarEmailStrategy {
 
 	public void enviarEmail(Object context) {
 		Agendamento agendamento = (Agendamento) context;
-
+		
 		String textoSimples = "Olá " + agendamento.getConsumidor().getNome() + ",\n\n"
 				+ "Seu agendamento foi confirmado com sucesso!\n\n" + "Detalhes:\n" + "- Procedimento: "
 				+ agendamento.getProcedimento().getNome() + "\n" + "- Profissional: "

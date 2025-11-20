@@ -24,6 +24,7 @@ public class BuscarProcedimento implements SaveAgendamentoStrategy {
 		Procedimento procedimento = procedimentoRepository.findById(agendamentoDTO.procedimentoId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		agendamento.setProcedimento(procedimento);
+		agendamento.setDateTimeTermino( agendamentoDTO.dateTime().plusMinutes(agendamento.getProcedimento().getTenant().getIntervaloEmMinutos()).minusMinutes(1));
 	}
 
 }

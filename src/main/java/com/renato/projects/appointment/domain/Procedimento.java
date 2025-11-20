@@ -43,6 +43,7 @@ public class Procedimento {
 	private Tenant tenant;
 	@OneToMany(mappedBy = "procedimento")
 	private List<Agendamento> agendamentos = new ArrayList<>();
+	private Integer multiplicadorIntervaloEmMinutos;
 
 	public Procedimento(PostProcedimentoDTO dto, Tenant tenant) {
 		this.nome = dto.nome();
@@ -50,6 +51,7 @@ public class Procedimento {
 		this.valor = dto.valor();
 		this.tenant = tenant;
 		this.habilitado = true;
+		this.multiplicadorIntervaloEmMinutos = 1; //padrão
 	}
 
 	public Procedimento(PostProcedimentoDTO dto) {

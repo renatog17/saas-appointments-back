@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.renato.projects.appointment.controller.dto.tenant.PostTenantDTO;
@@ -21,8 +22,6 @@ import com.renato.projects.appointment.service.strategy.tenant.save.SaveTenantSt
 import com.renato.projects.appointment.service.strategy.tenant.save.VerificarDisponibilidadeSlug;
 import com.renato.projects.appointment.service.strategy.tenant.save.VerificarDisponibilidadeUserEmail;
 
-import jakarta.transaction.Transactional;
-
 @Service
 public class TenantService {
 
@@ -30,7 +29,6 @@ public class TenantService {
 	private VerificarDisponibilidadeUserEmail verificarDisponibilidadeUserEmail;
 	private VerificarDisponibilidadeSlug verificarDisponibilidadeSlug;
 	private ConfirmacaoCadastroNovoUserTenant confirmacaoCadastroNovoUserTenant;
-	private Tenant orElseThrow;
 
 	public TenantService(TenantRepository tenantRepository,
 			VerificarDisponibilidadeUserEmail verificarDisponibilidadeUserEmail,
@@ -95,4 +93,14 @@ public class TenantService {
 			);
 	}
 
+	@Transactional
+	public void updateDuracaoProcedimentos(Integer duracao) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    Tenant tenant = tenantRepository.findByUser((User) authentication.getPrincipal()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));;
+	    tenant.setIntervaloEmMinutos(duracao);
+	}
+
+	public List<Tenant> findTenants(){
+		return tenantRepository.findAll();
+	}
 }

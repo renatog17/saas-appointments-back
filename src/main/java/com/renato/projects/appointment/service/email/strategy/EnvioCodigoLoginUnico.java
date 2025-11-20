@@ -7,7 +7,7 @@ import com.renato.projects.appointment.service.email.EmailData;
 import com.renato.projects.appointment.service.email.EmailService;
 
 @Component
-public class EnvioCodigoLoginUnico implements EnviarEmailStrategy {
+public class EnvioCodigoLoginUnico implements IEnviarEmailStrategy {
 
     private EmailService emailService;
 

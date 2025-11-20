@@ -41,8 +41,7 @@ public class UploadImagemTenantService {
         Path path = Paths.get(uploadDir, subfolder, filename);
 
         Files.createDirectories(path.getParent());
-        Files.write(path, file.getBytes());
-
+        Files.write(path, file.getBytes());        
         return subfolder + "/" + filename;
     }
 
@@ -76,7 +75,7 @@ public class UploadImagemTenantService {
 
 	public void uploadProcedimentoImage(Long id, MultipartFile file) throws IOException {
 		Procedimento procedimento = procedimentoRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
-		procedimento.setImage(uploadImage(file, "procedimento/"+procedimento.getTenant().getId()));
+		procedimento.setImage(uploadImage(file, "procedimento/"+procedimento.getId()));
 		procedimentoRepository.save(procedimento);
 	}
 }
