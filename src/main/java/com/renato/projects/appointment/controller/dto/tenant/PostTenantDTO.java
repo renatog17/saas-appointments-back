@@ -32,6 +32,7 @@ public record PostTenantDTO(
 		Tenant tenant = new Tenant();
 		tenant.setNome(nome);
 		tenant.setSlug(slug);
+		tenant.setIntervaloEmMinutos(60);
 		
 		User user = new User(register.login(), register.password());
 		tenant.setUser(user);
