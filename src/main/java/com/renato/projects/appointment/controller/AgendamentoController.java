@@ -23,8 +23,7 @@ public class AgendamentoController {
 		super();
 		this.agendamentoService = agendamentoService;
 	}
-	//teste githubactions
-	//mais um teste
+	
 	@PostMapping
 	public ResponseEntity<?> criarAgendamento(@RequestBody CreateAgendamentoDTO createAgendamentoDTO){
 		agendamentoService.realizarAgendamento(createAgendamentoDTO);
