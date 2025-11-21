@@ -12,18 +12,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup SSH
+      - name: Setup SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          echo -e "Host vps\n\tHostName ${{ secrets.SSH_HOST }}\n\tUser ${{ secrets.SSH_USER }}\n\tIdentityFile ~/.ssh/deploy_key\n\tStrictHostKeyChecking=no" >> ~/.ssh/config
 
       - name: Deploy on VPS
         run: |
-          ssh vps << 'EOF'
-          cd /root/app/saas-appointments-back
-          git pull
-          ./mvnw clean package -DskipTests
-          systemctl restart zendaa.service
+          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+            cd /root/app/saas-appointments-back
+            git pull
+            ./mvnw clean package -DskipTests
+            sudo systemctl daemon-reload
+            sudo systemctl restart zendaa.service
           EOF
