@@ -36,6 +36,8 @@ public class EnvioAgendaDiaria implements IEnviarEmailStrategy {
 			agendamentos.addAll(encontrados);
 		}
 		System.out.println(agendamentos.size()+"-> quantidade de agendamentos");
+		if(tenant.getReceberAgendaDiariaPorEmail()==false)
+			return;
 		if (agendamentos.isEmpty()) {
 			return; // não envia nada se não houver agendamentos
 		}

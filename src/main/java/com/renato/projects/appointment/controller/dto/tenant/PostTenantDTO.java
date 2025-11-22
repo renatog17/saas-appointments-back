@@ -33,6 +33,7 @@ public record PostTenantDTO(
 		tenant.setNome(nome);
 		tenant.setSlug(slug);
 		tenant.setIntervaloEmMinutos(60);
+		tenant.setReceberAgendaDiariaPorEmail(true);
 		
 		User user = new User(register.login(), register.password());
 		tenant.setUser(user);
