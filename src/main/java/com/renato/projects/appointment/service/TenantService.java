@@ -103,4 +103,11 @@ public class TenantService {
 	public List<Tenant> findTenants(){
 		return tenantRepository.findAll();
 	}
+	
+	@Transactional
+	public void updateReceberAgendaDiariaPorEmailDTO(Boolean receberAgendaDiariaPorEmail) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    Tenant tenant = tenantRepository.findByUser((User) authentication.getPrincipal()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));;
+	    tenant.setReceberAgendaDiariaPorEmail(receberAgendaDiariaPorEmail);
+	}
 }

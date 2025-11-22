@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.renato.projects.appointment.controller.dto.tenant.PostTenantDTO;
 import com.renato.projects.appointment.controller.dto.tenant.UpdateDuracaoDTO;
+import com.renato.projects.appointment.controller.dto.tenant.UpdateReceberAgendaDiariaPorEmailDTO;
 import com.renato.projects.appointment.controller.dto.tenant.UpdateSlugDTO;
 import com.renato.projects.appointment.domain.Tenant;
 import com.renato.projects.appointment.service.TenantService;
@@ -64,6 +65,12 @@ public class TenantController {
 	@PutMapping()
 	public ResponseEntity<?> updateDuracacaoProcedimentos(@RequestBody @Valid UpdateDuracaoDTO duracaoDTO){
 		tenantService.updateDuracaoProcedimentos(duracaoDTO.duracao());
+		return ResponseEntity.ok().build();
+	}
+	
+	@PutMapping("/agendadiaria")
+	public ResponseEntity<?> updateReceberAgendaDiariaPorEmail(@RequestBody @Valid UpdateReceberAgendaDiariaPorEmailDTO receberAgendaDiariaPorEmailDTO){
+		tenantService.updateReceberAgendaDiariaPorEmailDTO(receberAgendaDiariaPorEmailDTO.receberAgendaDiariaPorEmail());
 		return ResponseEntity.ok().build();
 	}
 }

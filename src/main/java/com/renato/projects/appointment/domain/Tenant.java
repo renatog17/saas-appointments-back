@@ -51,6 +51,7 @@ public class Tenant {
 	private List<Indisponibilidade> indisponibilidades;
 	
 	private Integer intervaloEmMinutos;
+	private Boolean receberAgendaDiariaPorEmail;
 	
 	public Tenant(String nome, String slug, List<Procedimento> procedimentos, User user) {
 		super();
