@@ -51,9 +51,6 @@ public class AgendamentoService {
 		agendamento.setDateTime(agendamentoDTO.dateTime());
 	
 		// inicio strategy{
-		// to-do verificar o conflito de horarios em verificarConflitoDeHorario
-		// a duração do procedimento tem que estar salvo em algum lugar
-		// a duração pode ser a mesma para todos ou cada procedimento com sua duração.
 		List<SaveAgendamentoStrategy> strategies = new ArrayList<SaveAgendamentoStrategy>();
 		strategies.add(buscarProcedimento);
 		strategies.add(buscarOuCriarConsumidor);
@@ -67,8 +64,6 @@ public class AgendamentoService {
 		agendamentoRepository.save(agendamento);
 
 		confirmacaoAgendamento.enviarEmail(agendamento);
-
-		// se houver erro em agendamento, o código alcança essa linha?
 		return ResponseEntity.ok(new ReadAgendamentoDTO(agendamento));
 	}
 
