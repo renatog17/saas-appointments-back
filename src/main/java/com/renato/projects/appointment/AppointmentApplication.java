@@ -12,8 +12,4 @@ public class AppointmentApplication {
 		SpringApplication.run(AppointmentApplication.class, args);
 	}
 
-	 @PostConstruct
-	    public void debugEnv() {
-	        System.out.println("POSTGRES_PASSWORD = " + System.getenv("POSTGRES_PASSWORD"));
-	    }
 }
