@@ -19,7 +19,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                    .allowedOrigins(allowedOrigin, "https://zendaavip.com.br", "http://localhost:5173")
+                    .allowedOrigins(allowedOrigin)
                     //verificar se utilizando o localhost:3000, funciona em produção tbm
                 	//.allowedOrigins("http://localhost:3000")
                     .allowedMethods("PATCH","GET", "POST", "PUT", "DELETE", "OPTIONS")

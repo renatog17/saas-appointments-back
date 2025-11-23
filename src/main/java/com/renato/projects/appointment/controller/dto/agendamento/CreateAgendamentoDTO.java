@@ -10,7 +10,7 @@ public record CreateAgendamentoDTO(
 		@NotNull
 		Long procedimentoId,
 		@NotNull
-		@FutureOrPresent
+		@FutureOrPresent(message = "A data e hora escolhidas não podem estar no passado")
 		LocalDateTime dateTime,
 		String telefone,
 		@NotBlank

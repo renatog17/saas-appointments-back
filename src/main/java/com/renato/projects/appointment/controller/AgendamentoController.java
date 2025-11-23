@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.renato.projects.appointment.controller.dto.agendamento.CreateAgendamentoDTO;
 import com.renato.projects.appointment.service.AgendamentoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/agendamento")
 public class AgendamentoController {
@@ -25,7 +27,7 @@ public class AgendamentoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> criarAgendamento(@RequestBody CreateAgendamentoDTO createAgendamentoDTO){
+	public ResponseEntity<?> criarAgendamento(@Valid @RequestBody CreateAgendamentoDTO createAgendamentoDTO){
 		agendamentoService.realizarAgendamento(createAgendamentoDTO);
 		return ResponseEntity.noContent().build();
 	}
