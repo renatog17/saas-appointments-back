@@ -56,7 +56,7 @@ public class TenantService {
 		//}Fim pattern strategy
 		tenantRepository.save(tenant);
 		
-		confirmacaoCadastroNovoUserTenant.enviarEmail(tenant/*.getUser()*/);
+		confirmacaoCadastroNovoUserTenant.enviarEmail(tenant);
 		
 		return tenant;
 	}
