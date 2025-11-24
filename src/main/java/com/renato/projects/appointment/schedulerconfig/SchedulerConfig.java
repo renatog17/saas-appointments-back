@@ -24,13 +24,10 @@ public class SchedulerConfig {
 	}
 
 	@Scheduled(cron = "0 5 0 * * *", zone = "America/Sao_Paulo")
-	//mudar isso para as properties
 	public void enviarEmailDiario() {
-		System.out.println("aqui");
 		List<Tenant> tenants = tenantService.findTenants();
 		System.out.println(tenants.size());
 		for (Tenant tenant : tenants) {
-			System.out.println("aqui dentro do for each");
 			envioAgendaDiaria.enviarEmail(tenant);
 		}
 	}

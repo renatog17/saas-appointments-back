@@ -39,7 +39,6 @@ public class AgendamentoController {
 	
 	@DeleteMapping("/{tenantId}")
 	public void exluirAgendamento(@PathVariable Long tenantId){
-		//tem que informar a quem cadastrou
 		agendamentoService.excluirAgendamentoPorId(tenantId);
 	}
 }

@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.renato.projects.appointment.controller.dto.agendamento.CreateAgendamentoDTO;
 import com.renato.projects.appointment.controller.dto.agendamento.ReadAgendamentoDTO;
@@ -24,7 +22,6 @@ import com.renato.projects.appointment.service.strategy.agendamento.save.SaveAge
 import com.renato.projects.appointment.service.strategy.agendamento.save.VerificarConflitoDeHorario;
 
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 @Service
 public class AgendamentoService {
