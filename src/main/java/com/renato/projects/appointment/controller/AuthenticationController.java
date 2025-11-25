@@ -54,6 +54,7 @@ public class AuthenticationController {
 					.secure(cookieSecure)
 					.sameSite(cookieSameSite)
 					.path("/")
+					.domain("zendaavip.com.br") 
 					.maxAge(Duration.ofHours(cookieMaxAgeHours))
 					.build();
 		
