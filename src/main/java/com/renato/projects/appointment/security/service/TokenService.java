@@ -24,11 +24,6 @@ public class TokenService {
 
 	@Value("${api.security.token.secret}")
 	private String secret;
-	
-	@PostConstruct
-	public void debugSecret() {
-	    System.out.println("JWT SECRET -> [" + secret + "]");
-	}
 
 	public String generateToken(User user) {
 		try {
