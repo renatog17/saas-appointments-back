@@ -1,6 +1,7 @@
 package com.renato.projects.appointment.security.config;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,9 +32,22 @@ public class SecurityFilter extends OncePerRequestFilter {
 		var token = this.recoverToken(request);
 		if(token!=null) {
 			var login = tokenService.validateToken(token);
-			UserDetails user = userRepository.findByLogin(login).get();
-			var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(authentication);
+			Optional<UserDetails> optionalUser = userRepository.findByLogin(login);
+			
+			
+			if (optionalUser.isPresent()) {
+	            UserDetails user = optionalUser.get();
+	            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+	            SecurityContextHolder.getContext().setAuthentication(authentication);
+	        } else {
+	            // Token inválido -> apagar cookie
+	            var cookie = new jakarta.servlet.http.Cookie("token", "");
+	            cookie.setPath("/");
+	            cookie.setMaxAge(0);
+	            cookie.setHttpOnly(true);
+	            cookie.setSecure(true); // se estiver usando HTTPS
+	            response.addCookie(cookie);
+	        }
 		}
 		filterChain.doFilter(request, response);
 	}
