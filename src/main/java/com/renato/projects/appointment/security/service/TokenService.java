@@ -13,12 +13,23 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.renato.projects.appointment.security.domain.User;
 
+import jakarta.annotation.PostConstruct;
+
+import jakarta.annotation.PostConstruct;
+
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class TokenService {
 
 	@Value("${api.security.token.secret}")
 	private String secret;
 	
+	@PostConstruct
+	public void debugSecret() {
+	    System.out.println("JWT SECRET -> [" + secret + "]");
+	}
+
 	public String generateToken(User user) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
