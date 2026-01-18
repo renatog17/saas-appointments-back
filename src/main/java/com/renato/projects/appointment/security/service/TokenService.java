@@ -13,17 +13,13 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.renato.projects.appointment.security.domain.User;
 
-import jakarta.annotation.PostConstruct;
-
-import jakarta.annotation.PostConstruct;
-
-import jakarta.annotation.PostConstruct;
-
 @Service
 public class TokenService {
 
 	@Value("${api.security.token.secret}")
 	private String secret;
+	@Value("${app.cookie.max-age-hours}")
+    private long cookieMaxAgeHours;
 
 	public String generateToken(User user) {
 		try {
@@ -53,6 +49,7 @@ public class TokenService {
 	}
 	
 	private Instant genExpirationDate() {
-		return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+	//	return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+		return LocalDateTime.now().plusHours(cookieMaxAgeHours).toInstant(ZoneOffset.of("-03:00"));
 	}
 }

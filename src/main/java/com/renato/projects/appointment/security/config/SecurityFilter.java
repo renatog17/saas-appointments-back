@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,11 +26,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 	TokenService tokenService;
 	@Autowired
 	UserRepository userRepository;
+	@Value("${app.cookie.secure}")
+    private boolean cookieSecure;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		var token = this.recoverToken(request);
+		System.out.println("sf");
 		if(token!=null) {
 			var login = tokenService.validateToken(token);
 			Optional<UserDetails> optionalUser = userRepository.findByLogin(login);
@@ -45,7 +49,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 	            cookie.setPath("/");
 	            cookie.setMaxAge(0);
 	            cookie.setHttpOnly(true);
-	            cookie.setSecure(true); // se estiver usando HTTPS
+	            cookie.setSecure(cookieSecure); // true se estiver usando HTTPS
+	            System.out.println(cookieSecure);
 	            response.addCookie(cookie);
 	        }
 		}

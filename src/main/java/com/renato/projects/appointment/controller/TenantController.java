@@ -53,6 +53,7 @@ public class TenantController {
 	
 	@GetMapping()
 	public ResponseEntity<?> getTenant(){
+		System.out.println("AQUIIII");
 		return ResponseEntity.ok(tenantService.findTenantWithProcedimentosByUserAuthenticated());
 	}
 	

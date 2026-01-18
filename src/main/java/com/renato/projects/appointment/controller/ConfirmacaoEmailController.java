@@ -33,6 +33,7 @@ public class ConfirmacaoEmailController {
 
 	@PostMapping("/reenviarcodigo")
 	public ResponseEntity<?> reenviarCodigo(@RequestBody ReenviarCodigoDTO reenviarCodigoDTO) {
+		System.out.println("Chegou aqui");
 		confirmacaoEmailService.enviarNovoCodigo(reenviarCodigoDTO.email());
 		return ResponseEntity.ok().build();
 	}

@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig {
 
-	@Value("${cors.allowed-origin}")
+	@Value("${cors.allowed-origins}")
     private String[] allowedOrigin;
 	
     @Bean
@@ -20,7 +20,8 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                     //.allowedOrigins(allowedOrigin)
-                .allowedOrigins("http://www.zendaavip.com.br", "http://zendaavip.com.br", "https://www.zendaavip.com.br", "https://zendaavip.com.br")
+                .allowedOrigins("http://www.zendaavip.com.br", "http://zendaavip.com.br", "https://www.zendaavip.com.br", "https://zendaavip.com.br"
+                		, "http://localhost:5173/")
                 
                     //verificar se utilizando o localhost:3000, funciona em produção tbm
                 	//.allowedOrigins("http://localhost:3000")

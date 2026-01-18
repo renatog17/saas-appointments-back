@@ -54,8 +54,9 @@ public class AuthenticationController {
 					.secure(cookieSecure)
 					.sameSite(cookieSameSite)
 					.path("/")
-					.domain("zendaavip.com.br") 
+					//.domain("zendaavip.com.br")
 					.maxAge(Duration.ofHours(cookieMaxAgeHours))
+					//.maxAge(Duration.ofMinutes(1))
 					.build();
 		
 		return ResponseEntity
@@ -80,6 +81,7 @@ public class AuthenticationController {
 
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletResponse response) {
+		System.out.println("dentro do logout");
 		ResponseCookie cookie = 
 				ResponseCookie
 					.from("token", "")
